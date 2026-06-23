@@ -6,7 +6,7 @@ use App\Http\Controllers\PostsController;
 
 
 Route::get(uri : '/', action : function(){
-    return "Server On !";
+    return to_route("posts.index");
 });
 
 //Posts

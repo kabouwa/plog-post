@@ -8,7 +8,6 @@ use Illuminate\View\Component;
 
 class header extends Component
 {
-    private $pageName;
     /**
      * Create a new component instance.
      */

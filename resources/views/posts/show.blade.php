@@ -13,9 +13,10 @@
             Post Info
         </div>
         <div class="card-body">
-            <h5 class="card-title">{{ $posts["title"] }}</h5>
-            <p class="card-text">{{ $posts["description"] }}</p>
-            <a href="/posts" class="btn btn-primary">Go Back</a>
+            <h5 class="card-title">{{ $post->title }}</h5>
+            <p class="card-text">{{ $post->description }}</p>
+            <a class="btn btn-outline-warning btn-sm flex-grow-1" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i> Edit</a>
+            <x-delete-post-modal :postId="$post->id" />
         </div>
     </div>
 
@@ -24,9 +25,9 @@
             Post Creator Info
         </div>
         <div class="card-body">
-            <h5 class="card-title">Name : {{ $posts["posted_by"] }}</h5>
-            <p class="card-text">Email : {{ $posts["email"] }}</p>
-            <p class="card-text">Created At : {{ $posts["created_at"] }}</p>
+            <h5 class="card-title">Name : {{ $post->posted_by }}</h5>
+            <p class="card-text">Email : {{ $post->email }}</p>
+            <p class="card-text">Created At : {{ $post->created_at }}</p>
         </div>
     </div>
 @endsection
