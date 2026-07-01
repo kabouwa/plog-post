@@ -44,13 +44,13 @@ class PostsController extends Controller
         // Step 1 - Get Data
         $r = request();
         // Step 2 - Save in database
-        Post::create([
+        $newPost = Post::create([
             "title" => $r->title,
             "description" => $r->description,
         ]);
-
+        
         // Step 3 - Redirect to Posts Page
-        return to_route("posts.index");
+        return to_route("posts.show",[$newPost->id]);
     }
 
     public function edit($postId){
@@ -75,4 +75,5 @@ class PostsController extends Controller
         Post::destroy([$postId]);
         return to_route('posts.index');
     }
+
 }

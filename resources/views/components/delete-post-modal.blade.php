@@ -1,5 +1,5 @@
-<button type="button" class="btn btn-outline-danger btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#del-modal-Pid{{ $postId }}-{{ $uniqueId }}"> <i class="bi bi-trash"></i> Delete</button>
-<div class="modal fade" tabindex="-1" id="del-modal-Pid{{ $postId }}-{{ $uniqueId }}">
+<button type="button" class="btn btn-outline-danger btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#delete-post-{{ $postId }}-modal-{{ $uniqueId }}"> <i class="bi bi-trash"></i> Delete</button>
+<div class="modal fade" tabindex="-1" id="delete-post-{{ $postId }}-modal-{{ $uniqueId }}">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">

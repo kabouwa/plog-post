@@ -8,21 +8,14 @@ use Illuminate\View\Component;
 
 class PostForm extends Component
 {
-    /**
-     * Create a new component instance.
-     */
     public function __construct(
         public $action = "", 
         public $method = "POST", 
         public $titleValue = "", 
         public $descValue = "", 
-        public $submitValue = "Submit", 
+        public $submitValue = "Create", 
         public $submitColor = "primary"
     ){}
-
-    /**
-     * Get the view / contents that represent the component.
-     */
     public function render(): View|Closure|string
     {
         return view('components.post-form');

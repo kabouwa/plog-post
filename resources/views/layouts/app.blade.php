@@ -6,39 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.0/font/bootstrap-icons.min.css" rel="stylesheet">
-    <style>
-        *{
-            box-sizing: border-box;
-        }
-        html{
-            scrollbar-width: thin;
-            scrollbar-color: rgba(128, 128, 128, 0.604) white
-        }
-        body{
-            background-image: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
-        }
-        main{
-            min-height: 80vh !important;
-        }
-    </style>
-
+    <link rel="stylesheet" href="{{ asset('css/globals.css') }}">
+    
     @yield('head')
-
     <title>Kabouwa - @yield('title')</title>
 </head>
 
 <body>
-    {{-- Method include --}}
+    {{-- Method include :: --}}
     {{-- @include('components.header') --}}
-    {{-- Components Method --}}
+    {{-- Components Method :: --}}
     <x-header/>
 
     <main class="container py-4">
 
-        <p class="display-3 my-0">@yield('heading') : </p>
-        <p> <a href="{{ $_SERVER['HTTP_REFERER'] ?? route("posts.index")}}" class="text-muted text-decoration-none"><i class="bi bi-arrow-left-circle"></i> Go back</a> </p>
+        <p class="display-3 my-0 text-@yield('heading-color')">@yield('heading')</p>
+        <p> <a href="{{ $_SERVER['HTTP_REFERER'] ?? route("posts.index")}}" class="text-decoration-none text-@yield('goback-color')  "><i class="bi bi-arrow-left-circle"></i> Go back</a> </p>
 
-        {{-- Main Content --}}
+        {{-- Main Content :: --}}
         @yield('content')
 
     </main>

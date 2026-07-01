@@ -1,0 +1,13 @@
+body{
+    background-image: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+    background-image: url("https://wallpapercave.com/wp/wp11581097.jpg");
+    background-size: cover;
+    background-position: center;
+}
+article .card{
+    backdrop-filter: blur(10px);
+}
+article .card-footer{
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+}

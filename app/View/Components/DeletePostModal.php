@@ -10,22 +10,15 @@ use Random\Engine\Secure;
 
 class DeletePostModal extends Component
 {
-    /**
-     * Create a new component instance.
-     */
+    private static int $counter = 659587;
     public function __construct(
         public $postId,
-        public $uniqueId = "",
-
+        public $uniqueId = 0,
     )
     {
-        $randomizer = new Randomizer(new Secure());
-        $this->uniqueId = $randomizer ->getInt(100000,9999999);
-    }
+        $this->uniqueId = static::$counter++ ;
 
-    /**
-     * Get the view / contents that represent the component.
-     */
+    }
     public function render(): View|Closure|string
     {
         return view('components.delete-post-modal');
