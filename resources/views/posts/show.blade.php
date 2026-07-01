@@ -6,6 +6,7 @@
 @section('title') Post @endsection
 
 @section('heading') Post @endsection
+@section('goback-color')muted @endsection
 
 @section('content')
     <div class="card mb-4">
@@ -16,7 +17,13 @@
             <h5 class="card-title">{{ $post->title }}</h5>
             <p class="card-text">{{ $post->description }}</p>
             <a class="btn btn-outline-warning btn-sm flex-grow-1" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i> Edit</a>
-            <x-delete-post-modal :postId="$post->id" />
+            <button 
+                type="button" 
+                class="btn btn-outline-danger btn-sm flex-grow-1" 
+                data-bs-toggle="modal" 
+                data-bs-target="#delete-post-{{ $post->id }}-modal">
+                <i class="bi bi-trash"></i> Delete
+            </button>
         </div>
     </div>
 
@@ -30,4 +37,8 @@
             <p class="card-text">Created At : {{ $post->created_at }}</p>
         </div>
     </div>
+@endsection
+
+@section('modals')
+    <x-delete-post-modal :post="$post"/>
 @endsection

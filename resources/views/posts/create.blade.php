@@ -12,6 +12,8 @@
 @section('title') Create Post @endsection
 
 @section('heading') Create Post @endsection
+@section('goback-color')muted @endsection
+
 
 @section('content')
 <x-post-form 

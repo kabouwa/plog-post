@@ -10,14 +10,10 @@ use Random\Engine\Secure;
 
 class DeletePostModal extends Component
 {
-    private static int $counter = 659587;
     public function __construct(
-        public $postId,
-        public $uniqueId = 0,
+        public $post,
     )
     {
-        $this->uniqueId = static::$counter++ ;
-
     }
     public function render(): View|Closure|string
     {

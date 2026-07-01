@@ -6,6 +6,7 @@
 @section('title') Edit Post @endsection
 
 @section('heading') Edit Post @endsection
+@section('goback-color')muted @endsection
 
 @section('content')
 {{-- the : before props is to say to blade evaluate the string as php  --}}
@@ -16,5 +17,10 @@
     :descValue="$post['description']" 
     submitValue="Update" 
     submitColor="success"
+    :postId="$post->id"
 />
+@endsection
+
+@section('modals')
+    <x-delete-post-modal :post="$post"/>
 @endsection

@@ -14,7 +14,8 @@ class PostForm extends Component
         public $titleValue = "", 
         public $descValue = "", 
         public $submitValue = "Create", 
-        public $submitColor = "primary"
+        public $submitColor = "primary",
+        public $postId = 0
     ){}
     public function render(): View|Closure|string
     {

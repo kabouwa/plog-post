@@ -26,6 +26,20 @@
             </select>
         </div>
     </div>
-
-    <input type="submit" class="btn btn-{{ $submitColor }}" value="{{ $submitValue }}">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 my-1">
+            <input type="submit" class="btn btn-{{ $submitColor }} w-100" value="{{ $submitValue }}">
+        </div>
+        @if($postId)
+        <div class="col-12 col-md-6 col-lg-4 my-1">
+            <button 
+                type="button" 
+                class="btn btn-outline-danger w-100" 
+                data-bs-toggle="modal" 
+                data-bs-target="#delete-post-{{ $postId }}-modal">
+                <i class="bi bi-trash"></i> Delete
+            </button>
+        </div>
+        @endif
+    </div>
 </form>
