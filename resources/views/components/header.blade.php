@@ -17,11 +17,19 @@
                         <a class="nav-link" href="{{ route('posts.create') }}">Create Post</a>
                     </li>
                 </ul>
+                
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item mx-auto d-flex justify-content-between gap-2">
-                        <a class="btn btn-outline-secondary px-5 flex-grow-1" href="">Login</a>
-                        <a class="btn btn-primary px-5 flex-grow-1" href="">Register</a>
-                    </li>
+                    @auth
+                        <li class="nav-item mx-auto d-flex justify-content-between gap-2">
+                            <a class="btn btn-outline-secondary px-4 flex-grow-1" href="{{ route('posts.index',['profile' => Auth::user()->username]) }}">My posts</a>
+                            <a class="btn btn-outline-danger px-4 flex-grow-1" href="{{ route('logout') }}">Logout</a>
+                        </li>
+                    @else
+                        <li class="nav-item mx-auto d-flex justify-content-between gap-2">
+                            <a class="btn btn-outline-secondary px-5 flex-grow-1" href="{{ route('login') }}">Login</a>
+                            <a class="btn btn-primary px-5 flex-grow-1" href="">Register</a>
+                        </li>
+                    @endauth
                 </ul>
             </div>
         </div>

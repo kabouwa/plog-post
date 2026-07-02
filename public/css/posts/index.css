@@ -22,7 +22,10 @@ article .card-footer{
     background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
 }
-
+.selected{
+    z-index: 999;
+    scale: 1.1;
+}
 #go-up{
     margin: 18px;
 }

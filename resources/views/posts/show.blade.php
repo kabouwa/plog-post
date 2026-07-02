@@ -23,21 +23,26 @@
         <div class="card-body">
             <h5 class="card-title">{{ $post->title }}</h5>
             <p class="card-text text-secondary">{{ $post->description }}</p>
-            <hr>
-            <div class="row">
-                <div class="col-12 col-sm-6 col-lg-3 my-1">
-                    <a class="btn btn-warning w-100" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i> Edit</a>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3 my-1">
-                    <button 
-                        type="button" 
-                        class="btn btn-outline-danger w-100" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#delete-post-{{ $post->id }}-modal">
-                        <i class="bi bi-trash"></i> Delete
-                    </button>
-                </div>
-            </div>
+            @auth
+                @if(Auth::user()->id == $post->creator->id || Auth::user()->is_admin)
+                    <hr>
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-lg-3 my-1">
+                            <a class="btn btn-warning w-100" id="edit-link" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i> Edit</a>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-3 my-1">
+                            <button 
+                                type="button" 
+                                class="btn btn-outline-danger w-100" 
+                                id="del-btn"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#delete-post-{{ $post->id }}-modal">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                @endif
+            @endauth
         </div>
     </div>
 
@@ -68,4 +73,8 @@
 
 @section('modals')
     <x-delete-post-modal :post="$post"/>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/posts/show.js') }}"></script>
 @endsection

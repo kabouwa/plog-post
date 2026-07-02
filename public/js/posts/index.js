@@ -31,16 +31,6 @@ const toview = (e,url,table=false) => {
     $("#ui-switcher").click(switchUi)
 })();
 
-// Card animation
-(function (){
-    $(".card-body").mouseover(e =>{
-        $(e.currentTarget).parent().css('transform','rotateZ(2deg)')
-    })
-    $(".card-body").mouseout(e =>{
-        $(e.currentTarget).parent().css('transform','rotateZ(0deg)')
-    })
-})();
-
 // Go up button
 (function (){
     const btn = $('#go-up')
@@ -60,8 +50,19 @@ const toview = (e,url,table=false) => {
     $(document).scroll(checkScrollY)
 })();
 
-// Keyboard Events
+// Keyboard Events and Card Events
 (function (){
+    let cards = $('.card')
+    let cardsBody = $(".card-body")
+    // Animation 
+    cardsBody.mouseover(e =>{
+        $(e.currentTarget).parent().css('transform','translateY(-5px)')
+    })
+    cardsBody.mouseout(e =>{
+        $(e.currentTarget).parent().css('transform','translateY(0px)')
+    })
+
+
     let viewLink, editLink, delBtn
     const handleShortcut = e => {
         const key = e.key
@@ -82,7 +83,10 @@ const toview = (e,url,table=false) => {
         }
     }
     $(document).keyup(handleShortcut)
-    $('.card').mouseover(e => {
+    cards.click(e => {
+        cards.removeClass('selected')
+        $(e.currentTarget).addClass('selected')
+
         // Find link of editing
         viewLink = $(e.currentTarget).data('view-link')
         // Find link of editing
@@ -91,5 +95,12 @@ const toview = (e,url,table=false) => {
         // Find delete button  
         const btns = $(e.currentTarget).find('.del-btn')
         delBtn = btns.first()
+    })
+
+    $('inpuy[name="q"]').focus( e => {
+        cards.removeClass('selected')
+        viewLink = null
+        editLink = null
+        delBtn  = null
     })
 })();

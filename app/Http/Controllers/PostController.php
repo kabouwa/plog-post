@@ -7,15 +7,35 @@ use App\Models\User ;
 use App\Models\Post ;
 
 // dd (die document : Stop all code and output a value for fast debugging)
-class PostsController extends Controller
+class PostController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         // SELECT * FROM Post (Without condition-filter-limit...)
         // $posts = Post::all();
         // Build query then execute with get()
-        $posts = Post::orderBy('id','DESC')->get();
+        
+        if($request->filled('profile')){
+            
+           $posts = Post::whereHas('user', function($query){
+                $query->where('username', request('profile'));
+           })
+            ->paginate(25)
+            ->withQueryString();
+            $total = Post::where('user_id',$request->user()->id)->count('id');
+        }else if($request->filled('q')){
+            // Jointure
+            $posts = Post::where('title', 'LIKE', '%' . request('q') . '%')
+            ->paginate(25);
+            $total = Post::count('id');
+        }else{
+            $posts = Post::orderByDesc('id')
+            ->paginate(25);
+            $total = Post::count('id');
+        }
+
         return view(view : 'posts.index', data : [
-            "posts" => $posts
+            "posts" => $posts,
+            "total" => $total
         ]);
     }
 
@@ -105,7 +125,7 @@ class PostsController extends Controller
             'creator' => ['required','integer','exists:users,id'],
         ]);
 
-        $post->updated([
+        $post->update([
             "title"       => $validated['title'],
             "description" => $validated['description'],
             "user_id" => $validated['creator'],

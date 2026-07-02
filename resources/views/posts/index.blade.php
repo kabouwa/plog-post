@@ -7,12 +7,18 @@
 @section('title') Posts @endsection
 
 
-@section('heading')Discover @endsection
+@section('heading')
+    @auth
+        Hey, {{ Auth::user()->name }}
+    @else
+        Discover
+    @endauth
+@endsection
 
 @section('content')
     <div class="row">
         <div class="col-12 col-sm-8 col-lg-10 my-1 d-flex align-items-center gap-2 text-info-emphasis">
-            Total posts : <strong>{{ count($posts) }}</strong>
+            Total posts : <strong>{{ $total }}</strong>
         </div>
         <div class="col-12 col-sm-4 col-lg-2  my-1 d-flex align-items-center">
             <button class="btn btn-sm btn-outline-secondary w-100" id="ui-switcher">
@@ -24,9 +30,11 @@
     <div class="row my-2">
         <div class="col-12">
             <form action="">
-                <div class="form-group d-flex gap-2">
-                    <input class="form-control" type="search" name="q">
-                    <button class="btn btn-primary" type="submit">Search</button>
+                <div class="input-group">
+                    <input class="form-control" type="search" name="q" placeholder="Search for a title" value="{{ request('q') }}">
+                    <span class="input-group-text bg-primary" style="width:20%; cursor: pointer;" onclick="$(this).closest('form').submit()">
+                        <i class="bi bi-search text-white mx-auto"></i>
+                    </span>
                 </div>
             </form>
         </div>
@@ -41,7 +49,7 @@
         @foreach ($posts as $post)
         <article class="col-12 col-sm-6 col-lg-4 p-2">
             <div class="card h-100 bg-transparent text-dark" data-view-link="{{ route('posts.show', $post->id ) }}">
-                <div class="card-body" onclick="toview(event, '{{ route('posts.show', $post->id ) }}' )" >
+                <div class="card-body" ondblclick="toview(event, '{{ route('posts.show', $post->id ) }}' )" >
                     <span class="badge bg-secondary mb-2">ID: {{ $post->id }}</span>
 
                     <h5 class="card-title">{{ $post->title }}</h5>
@@ -50,17 +58,21 @@
                         <strong>Created at:</strong> {{ $post->created_at->format('F d, Y') }}
                     </p>
                 </div>
-                <div class="card-footer  border-top d-flex gap-2">
-                    {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i>    View</a> --}}
-                    <a class="btn btn-outline-warning btn-sm flex-grow-1 edit-link" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i> Edit</a>
-                    <button
-                        type="button" 
-                        class="btn btn-outline-danger btn-sm flex-grow-1 del-btn" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#delete-post-{{ $post->id }}-modal">
-                        <i class="bi bi-trash"></i> Delete
-                    </button>
-                </div>
+                @auth
+                    @if(Auth::user()->id == $post->creator->id || Auth::user()->is_admin)
+                        <div class="card-footer border-top d-flex gap-2">
+                            {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i>    View</a> --}}
+                            <a class="btn btn-outline-warning btn-sm flex-grow-1 edit-link" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i> Edit</a>
+                            <button
+                                type="button" 
+                                class="btn btn-outline-danger btn-sm flex-grow-1 del-btn" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#delete-post-{{ $post->id }}-modal">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+                    @endif
+                @endauth
             </div>
         </article>
         @endforeach
@@ -95,19 +107,28 @@
                     <td>{{ $post->created_at->format('F d, Y') }}</td>
                     <td>
                         {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i> View </a> --}}
-                        <a class="btn btn-outline-warning btn-sm" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i></a>
-                        <button 
-                            type="button" 
-                            class="btn btn-outline-danger btn-sm" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#delete-post-{{ $post->id }}-modal">
-                                <i class="bi bi-trash"></i>
-                        </button>
+                        @auth
+                            @if(Auth::user()->id == $post->user->id || Auth::user()->is_admin)
+                            <a class="btn btn-outline-warning btn-sm" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i></a>
+                            <button 
+                                type="button" 
+                                class="btn btn-outline-danger btn-sm" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#delete-post-{{ $post->id }}-modal">
+                                    <i class="bi bi-trash"></i>
+                            </button>
+                            @endif
+                        @endauth
+                        
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
+    </section>
+    
+    <section>
+        {{ $posts->links() }}
     </section>
 @endsection
 
@@ -121,6 +142,8 @@
         <x-delete-post-modal :post="$post"/>
     @endforeach
 @endsection
+
+
 
 
 @section('scripts')

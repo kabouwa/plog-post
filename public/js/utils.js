@@ -26,3 +26,22 @@ const validateRequired = fields => {
         field.toggleClass('is-invalid',!isValid)
     })
 }
+
+// Password  button toggler
+(function(){
+    const showIcon = `<i class="bi bi-eye-fill"></i>`
+    const hideIcon = `<i class="bi bi-eye-slash-fill"></i>`
+    const passwordToggler = e => {
+        const toggler = $(e.currentTarget)
+        const field = toggler.parent().find('input')
+        const type = field.attr('type') === 'text' ? 'password' : 'text'
+        field.attr('type', type)
+
+        toggler.html(type === 'text' ? hideIcon : showIcon)
+    }
+    $('.password-toggler')
+    .html(showIcon)
+    .addClass('btn')
+    .addClass('btn-outline-primary')
+    .click(passwordToggler)
+})();
