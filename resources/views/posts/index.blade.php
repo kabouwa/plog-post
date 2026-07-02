@@ -7,12 +7,18 @@
 @section('title') Posts @endsection
 
 
-@section('heading-color')white @endsection
-@section('heading') Discover @endsection
-@section('goback-color')white @endsection
+@section('heading')Discover @endsection
 
 @section('content')
-    <button class="btn btn-outline-secondary text-white" id="ui-switcher">Switch View</button>
+    <div class="row">
+        <div class="col-12 col-sm-8 col-lg-10"></div>
+        <div class="col-12 col-sm-4 col-lg-2 d-flex align-items-center">
+            <button class="btn btn-sm btn-outline-secondary w-100" id="ui-switcher">
+                <i class="bi bi-arrow-left-right"></i>
+                Switch View
+            </button>
+        </div>
+    </div>
     {{-- @dd($posts) --}}
     @if (!count($posts))
         <section class="alert alert-danger my-5">
@@ -22,8 +28,8 @@
     <section class="row d-none" id="posts-cards">
         @foreach ($posts as $post)
         <article class="col-12 col-sm-6 col-lg-4 p-2">
-            <div class="card h-100 bg-transparent text-white">
-                <div class="card-body" onclick="location.href = '{{ route('posts.show', $post->id ) }}' " >
+            <div class="card h-100 bg-transparent text-dark" data-view-link="{{ route('posts.show', $post->id ) }}">
+                <div class="card-body" onclick="toview(event, '{{ route('posts.show', $post->id ) }}' )" >
                     <span class="badge bg-secondary mb-2">ID: {{ $post->id }}</span>
 
                     <h5 class="card-title">{{ $post->title }}</h5>
@@ -34,10 +40,10 @@
                 </div>
                 <div class="card-footer  border-top d-flex gap-2">
                     {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i>    View</a> --}}
-                    <a class="btn btn-outline-warning btn-sm flex-grow-1" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i> Edit</a>
-                    <button 
+                    <a class="btn btn-outline-warning btn-sm flex-grow-1 edit-link" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i> Edit</a>
+                    <button
                         type="button" 
-                        class="btn btn-outline-danger btn-sm flex-grow-1" 
+                        class="btn btn-outline-danger btn-sm flex-grow-1 del-btn" 
                         data-bs-toggle="modal" 
                         data-bs-target="#delete-post-{{ $post->id }}-modal">
                         <i class="bi bi-trash"></i> Delete
@@ -50,54 +56,55 @@
     @endif
 
     {{-- Table UI --}}
-    <table class="table table-hover mt-2 d-none" id="posts-table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Posted By</th>
-                <th>Created At</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!count($posts))
+    <section class="overflow-auto mw-100">
+        <table class="table table-hover mt-2 d-none" id="posts-table">
+            <thead>
                 <tr>
-                    <td colspan="5" class="text-center py-5 fw-bold h5">
-                        No Posts Founded !
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Posted By</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!count($posts))
+                    <tr>
+                        <td colspan="5" class="text-center py-5 fw-bold h5">
+                            No Posts Founded !
+                        </td>
+                    </tr>
+                @endif
+                @foreach ($posts as $post)
+                <tr onclick="toview(event, '{{ route('posts.show', $post->id ) }}', true)">
+                    <td>{{ $post->id }}</td>
+                    <td>{{ $post->title }}</td>
+                    <td>{{ $post->posted_by }}</td>
+                    <td>{{ $post->created_at }}</td>
+                    <td>
+                        {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i> View </a> --}}
+                        <a class="btn btn-outline-warning btn-sm" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i></a>
+                        <button 
+                            type="button" 
+                            class="btn btn-outline-danger btn-sm" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#delete-post-{{ $post->id }}-modal">
+                                <i class="bi bi-trash"></i>
+                        </button>
                     </td>
                 </tr>
-            @endif
-            @foreach ($posts as $post)
-            <tr>
-                <td>{{ $post->id }}</td>
-                <td>{{ $post->title }}</td>
-                <td>{{ $post->posted_by }}</td>
-                <td>{{ $post->created_at }}</td>
-                <td>
-                    {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i> View </a> --}}
-                    <a class="btn btn-outline-warning btn-sm flex-grow-1" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i> Edit</a>
-                    <button 
-                        type="button" 
-                        class="btn btn-outline-danger btn-sm flex-grow-1" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#delete-post-{{ $post->id }}-modal">
-                        <i class="bi bi-trash"></i> Delete
-                    </button>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    <div id="go-up" class="position-fixed">
-        <button type="button" class="btn btn-outline-primary text-white">
-            <i class="bi bi-arrow-up-circle"></i>
-        </button>
-    </div>
+                @endforeach
+            </tbody>
+        </table>
+    </section>
 @endsection
 
 @section('modals')
+    <div class="position-fixed bottom-0 end-0 m-1">
+        <button id="go-up" type="button" class="btn btn-outline-primary" style="display: none">
+            <i class="bi bi-arrow-up-circle"></i>
+        </button>
+    </div>
     @foreach ($posts as $post)
         <x-delete-post-modal :post="$post"/>
     @endforeach

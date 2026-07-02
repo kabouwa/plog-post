@@ -1,3 +1,8 @@
+// Go to view
+const toview = (e,url,table=false) => {
+    if(table && e.target.closest('td:last-child')) return
+    window.location.href = url
+}
 // Switch posts view
 (function (){
     let used_ui = localStorage.getItem('used_ui') ?? "cards" ;    
@@ -37,17 +42,52 @@
 // Go up button
 (function (){
     const btn = $('#go-up')
-    btn.css('opavity','0')
     btn.click(e=>{
         window.scrollTo(0,0)
     })
-    $(document).scroll(e=>{
-        const limit = 500
+    const checkScrollY = e => {
+        const limit = 200
         const delay = 500
         if(window.scrollY > limit){
             btn.slideDown(delay)
         }else{
             btn.slideUp(delay)
         }
+    }
+    checkScrollY()
+    $(document).scroll(checkScrollY)
+})();
+
+// Keyboard Events
+(function (){
+    let viewLink, editLink, delBtn
+    const handleShortcut = e => {
+        const key = e.key
+        switch(key){
+            case "Escape":
+                window.location.href = 'https://www.google.com'
+                break
+            case "v":   
+                if(viewLink) window.location.href = viewLink         
+                break
+            case "e":   
+                if(editLink) window.location.href = editLink         
+                break
+            case "d":
+            case "Delete":
+                if(delBtn) delBtn.click()         
+                break
+        }
+    }
+    $(document).keyup(handleShortcut)
+    $('.card').mouseover(e => {
+        // Find link of editing
+        viewLink = $(e.currentTarget).data('view-link')
+        // Find link of editing
+        const links = $(e.currentTarget).find('.edit-link')
+        editLink = links.first().attr('href')    
+        // Find delete button  
+        const btns = $(e.currentTarget).find('.del-btn')
+        delBtn = btns.first()
     })
 })();

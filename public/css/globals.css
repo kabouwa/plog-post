@@ -10,10 +10,15 @@ html{
 body{
     background-image: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
 }
-
 main{
     min-height: 80vh !important;
+    animation: entry 1s ease-in-out;
 }
-th,td{
-    text-align: center;
+@keyframes entry {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
 }

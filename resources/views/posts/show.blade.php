@@ -6,7 +6,6 @@
 @section('title') Post @endsection
 
 @section('heading') Post @endsection
-@section('goback-color')muted @endsection
 
 @section('content')
     <div class="card mb-4">

@@ -1,23 +1,47 @@
 body{
-    background-image: url("https://wallpapercave.com/wp/wp11581097.jpg");
-    background-size: cover;
+    background-image: url("/images/posts/background.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     background-position: center;
-}
-.card{
-    transition: all 0.2s ease-in-out;
+    background-size: cover;
+
+    /* background:
+        radial-gradient(circle at top left, #a7fff5, transparent 40%),
+        radial-gradient(circle at bottom right, #06b6d4, transparent 40%),
+        linear-gradient(135deg, #bdc7dd, #54709e); */
 }
 .card-body{
     cursor: pointer;
 }
 article .card{
-    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(120px);
+    transition: all 0.2s ease-in-out;
 }
 article .card-footer{
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
 }
 
 #go-up{
-    bottom: 18px;
-    right: 18px;
+    margin: 18px;
+}
+tr{
+    cursor: pointer;
+}
+th,td{
+    text-align: center;
+    white-space: nowrap;
+}
+@media screen and (max-width:700px){
+    td button, td a{
+        margin: 5px 0 !important;
+    }
+    th{
+        font-size: 0.8rem;
+        
+    }
+    td{
+        font-size: 0.9rem;
+    }
 }

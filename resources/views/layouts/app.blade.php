@@ -21,8 +21,8 @@
 
     <main class="container py-4">
 
-        <p class="display-3 my-0 text-@yield('heading-color')">@yield('heading')</p>
-        <p> <a href="{{ $_SERVER['HTTP_REFERER'] ?? route("posts.index")}}" class="text-decoration-none text-@yield('goback-color')  "><i class="bi bi-arrow-left-circle"></i> Go back</a> </p>
+        <p class="display-3 my-0 text-dark fw-bold">@yield('heading')</p>
+        <p> <a href="{{ $_SERVER['HTTP_REFERER'] ?? route("posts.index")}}" class="text-decoration-none text-muted"><i class="bi bi-arrow-left-circle"></i> Go back</a> </p>
 
         {{-- Main Content :: --}}
         @yield('content')

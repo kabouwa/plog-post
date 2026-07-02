@@ -21,8 +21,9 @@
             <span class="input-group-text">@</span>
             <select name="creator" id="creator" class="form-select" required>
                 <option value="" disabled selected>Choose post creator</option>
-                <option value="Mohammed">Mohammed</option>
-                <option value="Ahmed"   >Ahmed</option>
+                @foreach ($users as $user)
+                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                @endforeach
             </select>
         </div>
     </div>

@@ -6,7 +6,6 @@
 @section('title') Edit Post @endsection
 
 @section('heading') Edit Post @endsection
-@section('goback-color')muted @endsection
 
 @section('content')
 {{-- the : before props is to say to blade evaluate the string as php  --}}
