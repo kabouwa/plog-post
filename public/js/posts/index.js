@@ -9,19 +9,21 @@ const toview = (e,url,table=false) => {
     used_ui === "table"
         ? $("#posts-table").removeClass("d-none")
         : $("#posts-cards").removeClass("d-none")
-    let delay = 600;
+    let delay = 200;
 
     const switchUi = () => {
         if(used_ui === "cards"){
-            if ( $("#posts-table").hasClass("d-none") ) $("#posts-table").removeClass("d-none");
-            $("#posts-table").slideDown(delay);
-            $("#posts-cards").slideUp(delay)
+            $("#posts-cards").fadeOut(delay, function (){
+                $(this).addClass("d-none");
+                $("#posts-table").removeClass("d-none").hide().fadeIn(delay);
+            })
             used_ui = "table";
             localStorage.setItem("used_ui",used_ui)
         }else if(used_ui === "table"){
-            if ( $("#posts-cards").hasClass("d-none") ) $("#posts-cards").removeClass("d-none");
-            $("#posts-table").slideUp(delay);
-            $("#posts-cards").slideDown(delay)
+            $("#posts-table").fadeOut(delay, function () {
+                $(this).addClass("d-none");
+                $("#posts-cards").removeClass("d-none").hide().fadeIn(delay);
+            });
             used_ui = "cards";
             localStorage.setItem("used_ui",used_ui)
         }

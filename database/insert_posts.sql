@@ -1,4 +1,4 @@
-INSERT INTO posts (title, description, created_at, updated_at) VALUES
+INSERT INTO posts (title, description, created_at, updated_at, user_id) VALUES
 ('Introduction to JavaScript Promises', 'Learn how to handle asynchronous operations in JavaScript using Promises. This guide covers the basics of creating, resolving, and chaining promises for better async code management.', '2026-06-15 09:30:00', '2026-06-15 09:30:00'),
 ('Database Design Best Practices', 'Explore essential principles for designing efficient and scalable databases. Covers normalization, indexing, relationships, and optimization strategies for optimal performance.', '2026-06-15 13:20:00', '2026-06-15 13:20:00'),
 ('Node.js Express Server Setup', 'Step-by-step guide to setting up a production-ready Node.js Express server. Learn routing, middleware, error handling, and deployment best practices.', '2026-06-15 14:50:00', '2026-06-15 14:50:00'),

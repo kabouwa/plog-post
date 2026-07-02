@@ -11,12 +11,24 @@
 
 @section('content')
     <div class="row">
-        <div class="col-12 col-sm-8 col-lg-10"></div>
-        <div class="col-12 col-sm-4 col-lg-2 d-flex align-items-center">
+        <div class="col-12 col-sm-8 col-lg-10 my-1 d-flex align-items-center gap-2 text-info-emphasis">
+            Total posts : <strong>{{ count($posts) }}</strong>
+        </div>
+        <div class="col-12 col-sm-4 col-lg-2  my-1 d-flex align-items-center">
             <button class="btn btn-sm btn-outline-secondary w-100" id="ui-switcher">
                 <i class="bi bi-arrow-left-right"></i>
                 Switch View
             </button>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col-12">
+            <form action="">
+                <div class="form-group d-flex gap-2">
+                    <input class="form-control" type="search" name="q">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </form>
         </div>
     </div>
     {{-- @dd($posts) --}}
@@ -34,8 +46,8 @@
 
                     <h5 class="card-title">{{ $post->title }}</h5>
                     <p class="card-text">
-                        <strong>Posted by:</strong> {{ $post->posted_by }} <br>
-                        <strong>Created at:</strong> {{ $post->created_at }}
+                        <strong>Posted by:</strong> {{ $post->user->name }} <br>
+                        <strong>Created at:</strong> {{ $post->created_at->format('F d, Y') }}
                     </p>
                 </div>
                 <div class="card-footer  border-top d-flex gap-2">
@@ -79,8 +91,8 @@
                 <tr onclick="toview(event, '{{ route('posts.show', $post->id ) }}', true)">
                     <td>{{ $post->id }}</td>
                     <td>{{ $post->title }}</td>
-                    <td>{{ $post->posted_by }}</td>
-                    <td>{{ $post->created_at }}</td>
+                    <td>{{ $post->user->name }}</td>
+                    <td>{{ $post->created_at->format('F d, Y') }}</td>
                     <td>
                         {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i> View </a> --}}
                         <a class="btn btn-outline-warning btn-sm" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i></a>

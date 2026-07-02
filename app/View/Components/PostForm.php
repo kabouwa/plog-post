@@ -17,7 +17,8 @@ class PostForm extends Component
         public $descValue = "", 
         public $submitValue = "Create", 
         public $submitColor = "primary",
-        public $postId = 0
+        public $postId = 0,
+        public $creatorId = 0
     ){
         $this->users = User::orderBy('name')->get();
     }

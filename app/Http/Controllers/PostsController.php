@@ -52,22 +52,35 @@ class PostsController extends Controller
         // Get only specific fields
         request()->only(['title', 'description']);
 
-        // Step 1 - Get Data
+        // Step 1 - Validate
+        $validated  = request()->validate([
+            'title' => ['required','string','min:4','max:150'],
+            'description' => ['required','string','min:4','max:500'],
+            'creator' => ['required','integer','exists:users,id'],
+        ]);
+        // Step 2 - Get Data
         $r = request();
-        // Step 2 - Save in database
+        // Step 3 - Save in database
         // Method 1 : create new object from class model (all colomns authorized):
         // $post = new Post;
         // $post->title = $r->title;
         // $post->description = $r->description;
         // $post->save();
 
-        // Method 1 : use a static method (accessible just to fillable collumns defined in models) :
+        // Method 2 : use a static method (accessible just to fillable collumns defined in models) :
+        // $newPost = Post::create([
+        //     "title"       => $r->title,
+        //     "description" => $r->description,
+        //     "user_id" => $r->creator,
+        // ]);
+        // Just Take Validated data
         $newPost = Post::create([
-            "title"       => $r->title,
-            "description" => $r->description,
+            "title"       => $validated['title'],
+            "description" => $validated['description'],
+            "user_id" => $validated['creator'],
         ]);
         
-        // Step 3 - Redirect To Created Post View
+        // Step 4 - Redirect To Created Post View
         return to_route("posts.show",[$newPost->id]);
     }
 
@@ -85,9 +98,17 @@ class PostsController extends Controller
         //     'description' => $r->description,
         // ]);
         // Method 2 : Use Route Model Binding then update it
-        $post->update([
-            'title' => $r->title,
-            'description' => $r->description,
+
+        $validated  = request()->validate([
+            'title' => ['required','string','min:4','max:150'],
+            'description' => ['required','string','min:4','max:500'],
+            'creator' => ['required','integer','exists:users,id'],
+        ]);
+
+        $post->updated([
+            "title"       => $validated['title'],
+            "description" => $validated['description'],
+            "user_id" => $validated['creator'],
         ]);
 
         return to_route('posts.show', $post->id);

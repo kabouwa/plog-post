@@ -4,11 +4,12 @@
 
 html{
     scrollbar-width: thin;
-    scrollbar-color: rgba(128, 128, 128, 0.604) white
+    scrollbar-color: rgb(123, 123, 123) rgba(131, 255, 238, 0.344);
 }
-
 body{
     background-image: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
 }
 main{
     min-height: 80vh !important;
@@ -21,4 +22,12 @@ main{
     to{
         opacity: 1;
     }
+}
+.navbar-toggler{
+    padding: 0.25rem 0.5rem ;
+    font-size: 0.875rem;
+    border: none;
+}
+.glass-card{
+    background-color: rgba(255, 255, 255, 0.174);
 }

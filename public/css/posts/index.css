@@ -26,6 +26,11 @@ article .card-footer{
 #go-up{
     margin: 18px;
 }
+#posts-table{
+    --bs-table-bg: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(120px);
+}
+
 tr{
     cursor: pointer;
 }
