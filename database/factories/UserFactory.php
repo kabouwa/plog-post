@@ -22,18 +22,22 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    // Definition of fake data to seed
     public function definition(): array
     {
         return [
+            'username' => fake()->unique()->userName(),
+            'password' => Hash::make('password'),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'bio' => fake()->sentences(nb : rand(2,5), asText : true),
+            // Or : 'bio' => Str::random(150),
+            'is_admin' => false,
+
+            'email_verified_at' => null,
             'remember_token' => Str::random(10),
-            'username' => fake()->unique()->userName(),
         ];
     }
-
     /**
      * Indicate that the model's email address should be unverified.
      */
