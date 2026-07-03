@@ -26,6 +26,7 @@
             </button>
         </div>
     </div>
+
     <div class="row my-2">
         <div class="col-12">
             <form action="">
@@ -38,6 +39,16 @@
             </form>
         </div>
     </div>
+
+    @if( session()->has('alert') ) 
+        <x-modals.alert 
+            :type="session('type')"
+            :accent="session('accent')"
+        >
+            {{ session('alert') }}
+        </x-modals.alert>
+    @endif
+
     {{-- @dd($posts) --}}
     @if (!count($posts))
         <section class="alert alert-danger my-5">

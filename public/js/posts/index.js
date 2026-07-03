@@ -104,3 +104,5 @@ const toview = (e,url,table=false) => {
         delBtn  = null
     })
 })();
+
+deleteAlerts()

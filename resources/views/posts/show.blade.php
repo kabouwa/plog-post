@@ -12,6 +12,15 @@
         </style>
     </x-slot:head>
 
+    @if( session()->has('alert') ) 
+        <x-modals.alert 
+            :type="session('type')"
+            :accent="session('accent')"
+        >
+            {{ session('alert') }}
+        </x-modals.alert>
+    @endif
+    
     <article class="card mb-4 shadow-sm glass-card">
         <div class="card-header d-flex justify-content-between align-items-center overflow-hidden">
             <span class="fs-5 fw-semibold">Post Info</span>

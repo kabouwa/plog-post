@@ -27,6 +27,19 @@ const validateRequired = fields => {
     })
 }
 
+// Delete all alert
+const deleteAlerts = _ => {
+    setTimeout(()=>{
+        $('.alert').fadeOut(600, 
+            function () {
+                $(this).slideUp(300, 
+                    function () {
+                    $(this).remove();
+                });
+        });
+    },5000)
+}
+
 // Password  button toggler
 (function(){
     const showIcon = `<i class="bi bi-eye-fill"></i>`

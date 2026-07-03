@@ -21,7 +21,8 @@ class PostController extends Controller
            })
             ->paginate(25)
             ->withQueryString();
-            $total = Post::where('user_id',$request->user()->id)->count('id');
+            $total = Post::where('user_id',$request->user()->id)
+            ->count();
         }else if($request->filled('q')){
             // Jointure
             $posts = Post::where('title', 'LIKE', '%' . request('q') . '%')
@@ -47,16 +48,12 @@ class PostController extends Controller
         // Method 3 : Route Model binding 
         // in function parameter specify type of url parameter -> public function show(Post $post){}
         
-        return view(view : 'posts.show', data : [
-            'post' => $post
-        ]);
+        return view(view : 'posts.show', data : compact('post') );
     }
 
     public function create(){
         $users = User::orderBy('name')->get();
-        return view(view : "posts.create", data : [
-            'users' => $users
-        ]);
+        return view(view : "posts.create", data : compact('users') );
     }
 
     public function store(){
@@ -79,7 +76,9 @@ class PostController extends Controller
             'creator' => ['required','integer','exists:users,id'],
         ]);
         // Step 2 - Get Data
-        $r = request();
+        // $r = request();
+
+
         // Step 3 - Save in database
         // Method 1 : create new object from class model (all colomns authorized):
         // $post = new Post;
@@ -87,21 +86,26 @@ class PostController extends Controller
         // $post->description = $r->description;
         // $post->save();
 
+
         // Method 2 : use a static method (accessible just to fillable collumns defined in models) :
         // $newPost = Post::create([
         //     "title"       => $r->title,
         //     "description" => $r->description,
         //     "user_id" => $r->creator,
         // ]);
+
         // Just Take Validated data
-        $newPost = Post::create([
+        $post = Post::create([
             "title"       => $validated['title'],
             "description" => $validated['description'],
             "user_id" => $validated['creator'],
         ]);
         
         // Step 4 - Redirect To Created Post View
-        return to_route("posts.show",[$newPost->id]);
+        return to_route("posts.show", $post->id)
+            ->with('alert','Post created successfuly')
+            ->with('type','success')
+            ->with('accent','Done');
     }
 
     public function edit(Post $post){
@@ -131,7 +135,10 @@ class PostController extends Controller
             "user_id" => $validated['creator'],
         ]);
 
-        return to_route('posts.show', $post->id);
+        return to_route('posts.show', $post->id)
+                ->with('alert','Post Updated successfuly')
+                ->with('accent','Done')
+                ->with('type','success');
     }
 
     public function destroy(Post $post){
@@ -144,7 +151,10 @@ class PostController extends Controller
         // Or Directly
         $post->delete();
         
-        return to_route('posts.index');
+        return to_route('posts.index')
+                ->with('alert','Post Deleted successfuly')
+                ->with('accent','Done')
+                ->with('type','success');;
     }
 
 }

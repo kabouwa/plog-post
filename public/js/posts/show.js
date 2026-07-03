@@ -20,3 +20,5 @@
     }
     $(document).keyup(handleShortcut)
 })();
+
+deleteAlerts()

@@ -30,10 +30,10 @@ Route::get(uri : '/posts/create',      action : [PostController::class, 'create'
 
 Route::post(uri : '/posts',            action : [PostController::class, 'store'  ])->name('posts.store')->middleware('auth');
 
-Route::get(uri : '/posts/{post}',      action : [PostController::class, 'show'   ])->name('posts.show');
+Route::get(uri : '/posts/{post}',      action : [PostController::class, 'show'   ])->name('posts.show')->where('post','\d+');
 
-Route::get(uri : '/posts/{post}/edit', action : [PostController::class, 'edit'   ])->name('posts.edit')->middleware('auth');
+Route::get(uri : '/posts/{post}/edit', action : [PostController::class, 'edit'   ])->name('posts.edit')->where('post','\d+')->middleware('auth');
 
-Route::put(uri : '/posts/{post}',      action : [PostController::class, 'update' ])->name('posts.update')->middleware('auth');
+Route::put(uri : '/posts/{post}',      action : [PostController::class, 'update' ])->name('posts.update')->where('post','\d+')->middleware('auth');
 
-Route::delete(uri : '/posts/{post}',   action : [PostController::class, 'destroy'])->name('posts.destroy')->middleware('auth');
+Route::delete(uri : '/posts/{post}',   action : [PostController::class, 'destroy'])->name('posts.destroy')->where('post','\d+')->middleware('auth');

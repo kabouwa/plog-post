@@ -30,7 +30,7 @@ class UserFactory extends Factory
             'password' => Hash::make('password'),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'bio' => fake()->sentences(nb : rand(2,5), asText : true),
+            'bio' => Str::limit(fake()->sentences(nb : rand(2,5), asText : true), 150, '') ,
             // Or : 'bio' => Str::random(150),
             'is_admin' => false,
 
