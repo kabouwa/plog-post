@@ -1,3 +1,5 @@
+{{-- Anonymous component (no-class) --}}
+@props([])
 <header class="fixed-top container mx-auto ">
     <nav class="navbar navbar-expand-sm text-white rounded-3 my-3 w-100 px-1" style="background-color: rgba(255, 255, 255, 0.85);">
         <div class="container">
@@ -13,6 +15,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('posts.index') }}">All Posts</a>
                     </li>
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('posts.index',['profile' => Auth::user()->username]) }}">My posts</a>
+                        </li>
+                    @endauth
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('posts.create') }}">Create Post</a>
                     </li>
@@ -21,7 +28,7 @@
                 <ul class="navbar-nav ms-auto">
                     @auth
                         <li class="nav-item mx-auto d-flex justify-content-between gap-2">
-                            <a class="btn btn-outline-secondary px-4 flex-grow-1" href="{{ route('posts.index',['profile' => Auth::user()->username]) }}">My posts</a>
+                            <a class="btn btn-outline-secondary px-4 flex-grow-1 disabled" href="#">Profile</a>
                             <a class="btn btn-outline-danger px-4 flex-grow-1" href="{{ route('logout') }}">Logout</a>
                         </li>
                     @else

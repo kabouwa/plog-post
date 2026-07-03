@@ -1,5 +1,11 @@
-{{-- Old Layout Method --}}
-
+{{-- Anonymous Component --}}
+@props([
+    'head' => '',
+    'title' => '',
+    'heading' => '',
+    'modals' => '',
+    'scripts' => '',
+])
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,8 +17,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.0/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/globals.css') }}">
     
-    @yield('head')
-    <title>Kabouwa - @yield('title')</title>
+    {{ $head }}
+    <title>Kabouwa - {{ $title }}</title>
 </head>
 
 <body class="d-grid">
@@ -23,16 +29,16 @@
 
     <main class="container py-5 mt-5">
 
-        <p class="display-4 my-0 mb-1 text-dark fw-bold">@yield('heading')</p>
+        <p class="display-4 my-0 text-dark fw-bold">{{ $heading }}</p>
         <p> <a href="{{ $_SERVER['HTTP_REFERER'] ?? route("posts.index")}}" class="text-decoration-none text-muted"><i class="bi bi-arrow-left-circle"></i> Go back</a> </p>
 
         {{-- Main Content :: --}}
-        @yield('content')
+        {{ $slot }}
 
     </main>
 
     <div id="modals">
-        @yield('modals')
+        {{ $modals }}
     </div>
 
     {{-- @include('components.footer') --}}
@@ -42,6 +48,6 @@
     <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
     <script src="{{ asset('js/utils.js') }}"></script>
     <script src="{{ asset('js/posts/main.js') }}"></script>
-    @yield('scripts')
+    {{ $scripts }}
 </body>
 </html>

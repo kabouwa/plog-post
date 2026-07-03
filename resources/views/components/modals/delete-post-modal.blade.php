@@ -1,3 +1,7 @@
+{{-- Anonymous Component no class  --}}
+@props([
+    'post'
+])
 <div class="modal fade" tabindex="-1" id="delete-post-{{ $post->id }}-modal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">

@@ -1,5 +1,6 @@
-@extends('layouts.app')
+<x-layouts.app
+    title="Get started"
+    heading="Welcome Back !"
+>
 
-@section('content')
-<h1>Register page !!</h1>
-@endsection
+</x-layouts.app>

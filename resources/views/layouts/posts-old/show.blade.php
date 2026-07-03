@@ -1,18 +1,21 @@
-<x-layouts.app
-    :title="$post->title"
-    :heading="'Post*'.$post->id"
->
-    <x-slot:head>
-        <style>
-            .card-header{
-                background-image: url('/images/posts/background.png');
-                background-position: center;
-                background-size: cover
-            }
-        </style>
-    </x-slot:head>
+@extends('layouts.app')
 
-    <article class="card mb-4 shadow-sm glass-card">
+@section('head')
+<style>
+    .card-header{
+        background-image: url('/images/posts/background.png');
+        background-position: center;
+        background-size: cover
+    }
+</style>
+@endsection
+
+@section('title') Post @endsection
+
+@section('heading') Post*{{ $post->id }} @endsection
+
+@section('content')
+    <div class="card mb-4 shadow-sm glass-card">
         <div class="card-header d-flex justify-content-between align-items-center overflow-hidden">
             <span class="fs-5 fw-semibold">Post Info</span>
             <span class="badge bg-secondary">#{{ $post->id }}</span>
@@ -41,9 +44,9 @@
                 @endif
             @endauth
         </div>
-    </article>
+    </div>
 
-    <article class="card mb-4 shadow-sm glass-card">
+    <div class="card mb-4 shadow-sm glass-card">
         <div class="card-header">
             <span class="fs-5 fw-semibold">Post Creator Info</span>
         </div>
@@ -64,16 +67,14 @@
                 Created at {{ $post->created_at->format('H:i - D d F Y') }}
             </p>
         </div>
-    </article>
+    </div>
 
-    <x-slot:modals>
-        <x-modals.delete-post-modal :post="$post"/>
-    </x-slot:modals>
+@endsection
 
-    <x-slot:scripts>
-        <script src="{{ asset('js/posts/show.js') }}"></script>
-    </x-slot:scripts>
-</x-layouts.app>
+@section('modals')
+    <x-modals.delete-post-modal :post="$post"/>
+@endsection
 
-
-
+@section('scripts')
+    <script src="{{ asset('js/posts/show.js') }}"></script>
+@endsection

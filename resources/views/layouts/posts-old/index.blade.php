@@ -1,20 +1,23 @@
 {{-- Modern Layout method --}}
 
-<x-layouts.app
-    title="Posts"
->
-    <x-slot:head>
-       <link rel="stylesheet" href="{{ asset('css/posts/index.css') }}"> 
-    </x-slot:head>
+@extends('layouts.app')
 
-    <x-slot:heading>
-        @auth
-            Hey, {{ Auth::user()->name }}
-        @else
-            Discover
-        @endauth
-    </x-slot:heading>
+@section('head')
+<link rel="stylesheet" href="{{ asset('css/posts/index.css') }}">
+@endsection
 
+@section('title') Posts @endsection
+
+
+@section('heading')
+    @auth
+        Hey, {{ Auth::user()->name }}
+    @else
+        Discover
+    @endauth
+@endsection
+
+@section('content')
     <div class="row">
         <div class="col-12 col-sm-8 col-lg-10 my-1 d-flex align-items-center gap-2 text-info-emphasis">
             Total posts : <strong>{{ $total }}</strong>
@@ -129,21 +132,22 @@
     <section>
         {{ $posts->links() }}
     </section>
+@endsection
 
-    <x-slot:modals>
-        <div class="position-fixed bottom-0 end-0 m-1">
-            <button id="go-up" type="button" class="btn btn-outline-primary" style="display: none">
-                <i class="bi bi-arrow-up-circle"></i>
-            </button>
-        </div>
-        @foreach ($posts as $post)
-            <x-modals.delete-post-modal :post="$post"/>
-        @endforeach
+@section('modals')
+    <div class="position-fixed bottom-0 end-0 m-1">
+        <button id="go-up" type="button" class="btn btn-outline-primary" style="display: none">
+            <i class="bi bi-arrow-up-circle"></i>
+        </button>
+    </div>
+    @foreach ($posts as $post)
+        <x-modals.delete-post-modal :post="$post"/>
+    @endforeach
+@endsection
 
-    </x-slot:modals>
 
-    <x-slot:scripts>
-        <script src="{{ asset('js/posts/index.js') }}"></script>
-    </x-slot:scripts>
 
-</x-layouts.app>
+
+@section('scripts')
+<script src="{{ asset('js/posts/index.js') }}"></script>
+@endsection

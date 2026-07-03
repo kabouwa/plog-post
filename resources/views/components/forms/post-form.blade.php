@@ -1,3 +1,4 @@
+{{-- Class Component --}}
 <form class="form" method="POST" action="{{ $action }}">
     @csrf
     @method($method)

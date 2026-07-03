@@ -1,8 +1,7 @@
-@extends('layouts.app')
-
-@section('heading')Welcome Back ! @endsection
-
-@section('content')
+<x-layouts.app
+    title="Login"
+    heading="Welcome Back !"
+>
     <div class="rowr">
         <div class="col-12 col-sm-8 col-lg-5 mx-auto bg-light p-4 rounded-3">
             <h3 class="mb-3">Login</h3>
@@ -48,10 +47,9 @@
             
         </div>
     </div>
-@endsection
-
-@section('scripts')
-    <script>
-        $('input').keyup(e => { validateRequired([$(e.currentTarget)]) })
-    </script>
-@endsection
+    <x-slot:scripts>
+        <script>
+            $('input').keyup(e => { validateRequired([$(e.currentTarget)]) })
+        </script>
+    </x-slot:scripts>
+</x-layouts.app>
