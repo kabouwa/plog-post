@@ -8,11 +8,14 @@ use Illuminate\Support\Facades\Auth;
 
 
 class LoginController extends Controller
-{
-    public function login(){
+{   
+    // Create login form
+    public function create(){
         return view('auth.login');
     }
-    public function authenticate(Request $request){
+    
+    // Store auth session
+    public function store(Request $request){
         // Get credentials from form
         $credentials = $request->validate([
             'username' => ['required','string'],
@@ -34,7 +37,7 @@ class LoginController extends Controller
         ])->onlyInput('username');
     }
 
-    public function logout(Request $request){
+    public function destroy(Request $request){
         // Log out
         Auth::logout();
         // Invalidate session 

@@ -97,12 +97,14 @@ const toview = (e,url,table=false) => {
         delBtn = btns.first()
     })
 
-    $('inpuy[name="q"]').focus( e => {
+    const cleanSelected = e => {
+        if( $(e.target).closest('.card').length ) return
         cards.removeClass('selected')
         viewLink = null
         editLink = null
         delBtn  = null
-    })
+    }
+    $(document).click(cleanSelected)
 })();
 
 deleteAlerts()

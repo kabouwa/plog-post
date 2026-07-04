@@ -59,10 +59,15 @@
         @foreach ($posts as $post)
         <article class="col-12 col-sm-6 col-lg-4 p-2">
             <div class="card h-100 bg-transparent text-dark" data-view-link="{{ route('posts.show', $post->id ) }}">
+                <img class="card-img p-1 rounded-3" src="https://picsum.photos/600/400?random={{ rand() }}" alt="Post picture">
+
+
                 <div class="card-body" ondblclick="toview(event, '{{ route('posts.show', $post->id ) }}' )" >
                     <span class="badge bg-secondary mb-2">ID: {{ $post->id }}</span>
-
-                    <h5 class="card-title">{{ $post->title }}</h5>
+                    <h5 class="card-title">
+                        {{ $post->title }}
+                        <a class="text-decoration-none text-muted" href="{{ route('posts.show', $post->id ) }}">more...</a>
+                    </h5>
                     <p class="card-text">
                         <strong>Posted by:</strong> {{ $post->user->name }} <br>
                         <strong>Created at:</strong> {{ $post->created_at->format('F d, Y') }}

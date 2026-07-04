@@ -2,7 +2,7 @@
     'type' => 'success',
     'accent' => '',
 ])
-<div class="alert alert-dismissible fade show my-3 alert-{{ $type }}" role="alert">
+<div class="alert-compo alert alert-dismissible fade show my-3 alert-{{ $type }}" role="alert">
     <strong>{{ $accent }}!</strong> {{ $slot }}
     <button 
         type="button" 

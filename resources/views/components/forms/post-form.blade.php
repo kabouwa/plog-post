@@ -26,7 +26,7 @@
             @enderror
         </div>
     </div>
-    <div class="form-group mb-4">
+    {{-- <div class="form-group mb-4">
         <label for="creator" class="form-label">Post Creator*</label>
         <div class="input-group">
             <span class="input-group-text">@</span>
@@ -42,7 +42,7 @@
                 </div>
             @enderror
         </div>
-    </div>
+    </div> --}}
     <div class="row">
         <div class="col-12 col-md-6 col-lg-4 my-1">
             <input type="submit" class="btn btn-{{ $submitColor }} w-100" value="{{ $submitValue }}">

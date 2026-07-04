@@ -2,10 +2,17 @@
     title="Login"
     heading="Welcome Back !"
 >
-    <div class="rowr">
+    <div class="row">
+
+        @if(session('alert'))
+            <x-modals.alert type='success' :accent="session('accent')">
+                {{ session('alert') }}
+            </x-modals.alert>
+        @endif
+
         <div class="col-12 col-sm-8 col-lg-5 mx-auto bg-light p-4 rounded-3">
             <h3 class="mb-3">Login</h3>
-            <form method="POST" action="{{ route('authenticate') }}" class="form">
+            <form method="POST" action="{{ route('login') }}" class="form">
                 @csrf
                 <div class="form-group my-2">
                     <label class="form-label" for="username">Username :</label>
@@ -35,7 +42,7 @@
                     <button type="submit" class="btn btn-primary w-100">Login</button>
                 </div>
             </form>
-            <p class="text-muted text-center">Haven't registred yet? <a class="" href="">register</a></p>  
+            <p class="text-muted text-center">Haven't registred yet? <a class="" href="{{ route('register') }}">register</a></p>  
 
             
             @error('credentials')

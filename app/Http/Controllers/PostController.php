@@ -19,18 +19,18 @@ class PostController extends Controller
            $posts = Post::whereHas('user', function($query){
                 $query->where('username', request('profile'));
            })
-            ->paginate(25)
+            ->paginate(15)
             ->withQueryString();
             $total = Post::where('user_id',$request->user()->id)
             ->count();
         }else if($request->filled('q')){
             // Jointure
             $posts = Post::where('title', 'LIKE', '%' . request('q') . '%')
-            ->paginate(25);
+            ->paginate(15);
             $total = Post::count('id');
         }else{
             $posts = Post::orderByDesc('id')
-            ->paginate(25);
+            ->paginate(15);
             $total = Post::count('id');
         }
 
@@ -73,7 +73,7 @@ class PostController extends Controller
         $validated  = request()->validate([
             'title' => ['required','string','min:4','max:150'],
             'description' => ['required','string','min:4','max:500'],
-            'creator' => ['required','integer','exists:users,id'],
+            // 'creator' => ['required','integer','exists:users,id'],
         ]);
         // Step 2 - Get Data
         // $r = request();
@@ -98,7 +98,8 @@ class PostController extends Controller
         $post = Post::create([
             "title"       => $validated['title'],
             "description" => $validated['description'],
-            "user_id" => $validated['creator'],
+            // "user_id" => $validated['creator'],
+            "user_id"     => request()->user()->id
         ]);
         
         // Step 4 - Redirect To Created Post View
@@ -126,13 +127,13 @@ class PostController extends Controller
         $validated  = request()->validate([
             'title' => ['required','string','min:4','max:150'],
             'description' => ['required','string','min:4','max:500'],
-            'creator' => ['required','integer','exists:users,id'],
+            // 'creator' => ['required','integer','exists:users,id'],
         ]);
 
         $post->update([
             "title"       => $validated['title'],
             "description" => $validated['description'],
-            "user_id" => $validated['creator'],
+            // "user_id" => $validated['creator'],
         ]);
 
         return to_route('posts.show', $post->id)
@@ -151,7 +152,7 @@ class PostController extends Controller
         // Or Directly
         $post->delete();
         
-        return to_route('posts.index')
+        return redirect()->back()
                 ->with('alert','Post Deleted successfuly')
                 ->with('accent','Done')
                 ->with('type','success');;

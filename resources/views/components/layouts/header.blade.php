@@ -29,12 +29,15 @@
                     @auth
                         <li class="nav-item mx-auto d-flex justify-content-between gap-2">
                             <a class="btn btn-outline-secondary px-4 flex-grow-1 disabled" href="#">Profile</a>
-                            <a class="btn btn-outline-danger px-4 flex-grow-1" href="{{ route('logout') }}">Logout</a>
+                            <form method="POST" action="{{ route('logout') }}" class="d-inline-block">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-danger px-4 flex-grow-1">Logout</button>
+                            </form>
                         </li>
                     @else
                         <li class="nav-item mx-auto d-flex justify-content-between gap-2">
                             <a class="btn btn-outline-secondary px-5 flex-grow-1" href="{{ route('login') }}">Login</a>
-                            <a class="btn btn-primary px-5 flex-grow-1" href="">Register</a>
+                            <a class="btn btn-primary px-5 flex-grow-1" href="{{ route('register') }}">Register</a>
                         </li>
                     @endauth
                 </ul>

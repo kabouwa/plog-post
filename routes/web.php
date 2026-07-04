@@ -13,13 +13,19 @@ Route::get(uri : '/', action : function(){
 });
 
 
-// Authentication
-Route::get(uri : '/login',             action : [LoginController::class,'login'        ])->name('login')->middleware('guest');
-Route::post(uri : '/login',            action : [LoginController::class,'authenticate' ])->name('authenticate')->middleware('guest');
-Route::get(uri : '/logout',            action : [LoginController::class,'logout'       ])->name('logout');
+// Login - logout
+Route::get(uri : '/login',             action : [LoginController::class,'create'    ])->name('login')   ->middleware('guest');
+Route::post(uri : '/login',            action : [LoginController::class,'store'     ])->middleware('guest');
+Route::post(uri : '/logout',           action : [LoginController::class,'destroy'   ])->name('logout')  ->middleware('auth');
+
+// Register
+Route::get(uri : '/register',          action : [RegisterController::class,'create' ])->name('register')->middleware('guest');
+Route::post(uri : '/register',         action : [RegisterController::class,'store'  ])->middleware('guest');
 
 
-// Route::get(uri : '/register',          action : [RegisterController::class,'create'   ])->name('auth.register');
+// Users 
+
+
 
 
 //Posts
@@ -30,7 +36,7 @@ Route::get(uri : '/posts/create',      action : [PostController::class, 'create'
 
 Route::post(uri : '/posts',            action : [PostController::class, 'store'  ])->name('posts.store')->middleware('auth');
 
-Route::get(uri : '/posts/{post}',      action : [PostController::class, 'show'   ])->name('posts.show')->where('post','\d+');
+Route::get(uri : '/posts/{post}',      action : [PostController::class, 'show'   ])->name('posts.show')->where('post','\d+'); // where not important if the route bind with modal (Post $post)
 
 Route::get(uri : '/posts/{post}/edit', action : [PostController::class, 'edit'   ])->name('posts.edit')->where('post','\d+')->middleware('auth');
 
