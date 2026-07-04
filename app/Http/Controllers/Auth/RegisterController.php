@@ -32,6 +32,7 @@ class RegisterController extends Controller
             'email' => $validated['email'],
             'username' => $validated['username'],
             'password' => Hash::make($validated['password']),
+            'bio' =>  'No information.'
         ]);
 
         // Redirect to login

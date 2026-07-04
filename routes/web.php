@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 
 
 date_default_timezone_set('Africa/Casablanca');
@@ -24,7 +24,7 @@ Route::post(uri : '/register',         action : [RegisterController::class,'stor
 
 
 // Users 
-
+Route::get(uri : '/users',             action : [UserController::class, 'index'  ])->name('users.index');
 
 
 

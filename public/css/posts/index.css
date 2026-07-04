@@ -5,10 +5,6 @@ body{
     background-position: center;
     background-size: cover;
 
-    /* background:
-        radial-gradient(circle at top left, #a7fff5, transparent 40%),
-        radial-gradient(circle at bottom right, #06b6d4, transparent 40%),
-        linear-gradient(135deg, #bdc7dd, #54709e); */
 }
 .card-body{
     cursor: pointer;

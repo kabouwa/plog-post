@@ -7,22 +7,22 @@ const toview = (e,url,table=false) => {
 (function (){
     let used_ui = localStorage.getItem('used_ui') ?? "cards" ;    
     used_ui === "table"
-        ? $("#posts-table").removeClass("d-none")
-        : $("#posts-cards").removeClass("d-none")
+        ? $("#table-view").removeClass("d-none")
+        : $("#cards-view").removeClass("d-none")
     let delay = 200;
 
     const switchUi = () => {
         if(used_ui === "cards"){
-            $("#posts-cards").fadeOut(delay, function (){
+            $("#cards-view").fadeOut(delay, function (){
                 $(this).addClass("d-none");
-                $("#posts-table").removeClass("d-none").hide().fadeIn(delay);
+                $("#table-view").removeClass("d-none").hide().fadeIn(delay);
             })
             used_ui = "table";
             localStorage.setItem("used_ui",used_ui)
         }else if(used_ui === "table"){
-            $("#posts-table").fadeOut(delay, function () {
+            $("#table-view").fadeOut(delay, function () {
                 $(this).addClass("d-none");
-                $("#posts-cards").removeClass("d-none").hide().fadeIn(delay);
+                $("#cards-view").removeClass("d-none").hide().fadeIn(delay);
             });
             used_ui = "cards";
             localStorage.setItem("used_ui",used_ui)

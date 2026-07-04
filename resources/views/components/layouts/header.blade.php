@@ -13,7 +13,10 @@
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('posts.index') }}">All Posts</a>
+                        <a class="nav-link" href="{{ route('users.index') }}">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('posts.index') }}">Posts</a>
                     </li>
                     @auth
                         <li class="nav-item">
