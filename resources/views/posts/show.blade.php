@@ -58,7 +58,7 @@
         </div>
         <div class="card-body">
 
-            <div class="d-flex align-items-center mb-3">
+            <div class="d-flex align-items-center mb-3" onclick="toview(event , '{{ route('users.show', $post->user->id) }}' )" style="cursor: pointer">
                 <div class="bg-primary-subtle text-primary-emphasis rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
                     <i class="bi bi-person-fill fs-4"></i>
                 </div>
@@ -80,7 +80,7 @@
     </x-slot:modals>
 
     <x-slot:scripts>
-        <script src="{{ asset('js/posts/show.js') }}"></script>
+        <script src="{{ asset('js/show.js') }}"></script>
     </x-slot:scripts>
 </x-layouts.app>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,23 +16,16 @@ class RegisterController extends Controller
         return view('auth.register');
     }
 
-    public function store(Request $request){
+    public function store(RegisterRequest $request){
         // Validation
-        $validated = $request->validate([
-            'name'     => 'required|min:4|max:35',
-            'email'    => 'required|min:10|max:100|email|unique:users',
-            'username' => 'required|min:4|max:35|',
-            // 'password' => ['required','min:8','max:100','confirmed', Password::min(8)->letters()->numbers()->symbols()],
-            'password' => ['required','min:4','max:100','confirmed'],
-            'password_confirmation' => 'required',
-        ]);
+        $validated = $request->validated();
 
         // Insert in database
         User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'username' => $validated['username'],
-            'password' => Hash::make($validated['password']),
+            'password' => $validated['password'],
             'bio' =>  'No information.'
         ]);
 

@@ -4,7 +4,7 @@
     title="Posts"
 >
     <x-slot:head>
-       <link rel="stylesheet" href="{{ asset('css/posts/index.css') }}"> 
+       <link rel="stylesheet" href="{{ asset('css/index.css') }}"> 
     </x-slot:head>
 
     <x-slot:heading>
@@ -163,7 +163,7 @@
     </x-slot:modals>
 
     <x-slot:scripts>
-        <script src="{{ asset('js/posts/index.js') }}"></script>
+        <script src="{{ asset('js/index.js') }}"></script>
     </x-slot:scripts>
 
 </x-layouts.app>

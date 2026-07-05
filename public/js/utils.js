@@ -40,6 +40,12 @@ const deleteAlerts = _ => {
     },5000)
 }
 
+// Go to view
+const toview = (e,url,table=false) => {
+    if(table && e.target.closest('td:last-child')) return
+    window.location.href = url
+}
+
 // Password  button toggler
 (function(){
     const showIcon = `<i class="bi bi-eye-fill"></i>`

@@ -1,8 +1,3 @@
-// Go to view
-const toview = (e,url,table=false) => {
-    if(table && e.target.closest('td:last-child')) return
-    window.location.href = url
-}
 // Switch posts view
 (function (){
     let used_ui = localStorage.getItem('used_ui') ?? "cards" ;    

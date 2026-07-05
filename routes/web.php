@@ -26,6 +26,13 @@ Route::post(uri : '/register',         action : [RegisterController::class,'stor
 // Users 
 Route::get(uri : '/users',             action : [UserController::class, 'index'  ])->name('users.index');
 
+Route::get(uri : '/users/{user}',      action : [UserController::class, 'show'   ])->name('users.show')->where('user','\d+');
+
+Route::get(uri : '/users/{user}/edit', action : [UserController::class, 'edit'   ])->name('users.edit')->where('user','\d+');
+
+Route::put(uri : '/users/{user}',      action : [UserController::class, 'update'   ])->name('users.update')->where('user','\d+');
+
+Route::delete(uri : '/users/{user}',   action : [UserController::class, 'destroy'])->name('users.destroy')->where('user','\d+');
 
 
 //Posts
@@ -43,3 +50,6 @@ Route::get(uri : '/posts/{post}/edit', action : [PostController::class, 'edit'  
 Route::put(uri : '/posts/{post}',      action : [PostController::class, 'update' ])->name('posts.update')->where('post','\d+')->middleware('auth');
 
 Route::delete(uri : '/posts/{post}',   action : [PostController::class, 'destroy'])->name('posts.destroy')->where('post','\d+')->middleware('auth');
+
+
+// '/posts/{post:title}' to change default key in uri :nameColumn

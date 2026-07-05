@@ -74,7 +74,7 @@
                 </div>
             </form>
 
-            <p class="text-muted text-center">Already have an acount? <a class="" href="{{ route('login') }}">login</a></p>  
+            <p class="text-muted text-center">Already have an acount? <a class="" href="{{ route('login') }}">login in</a></p>  
 
             
             @error('credentials')

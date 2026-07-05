@@ -2,7 +2,7 @@
     title="Profiles"
 >
     <x-slot:head>
-        <link rel="stylesheet" href="{{ asset('css/posts/index.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/index.css') }}">
     </x-slot:head>
 
     <x-slot:heading>
@@ -12,10 +12,11 @@
             Register Now And Create Your Own Profile
         @endauth
     </x-slot:heading>
+    .
 
     <div class="row">
         <div class="col-12 col-sm-8 col-lg-10 my-1 d-flex align-items-center gap-2 text-info-emphasis">
-            Total users : <strong>{{ $total }}</strong>
+            Total Users : <strong>{{ $total }}</strong>
         </div>
         <div class="col-12 col-sm-4 col-lg-2  my-1 d-flex align-items-center">
             <button class="btn btn-sm btn-outline-secondary w-100" id="ui-switcher">
@@ -29,7 +30,7 @@
         <div class="col-12">
             <form action="">
                 <div class="input-group">
-                    <input class="form-control" type="search" name="q" placeholder="Search for a title" value="{{ request('q') }}">
+                    <input class="form-control" type="search" name="q" placeholder="Search for a user" value="{{ request('q') }}">
                     <span class="input-group-text bg-primary" style="width:20%; cursor: pointer;" onclick="$(this).closest('form').submit()">
                         <i class="bi bi-search text-white mx-auto"></i>
                     </span>
@@ -56,8 +57,8 @@
     <section class="row d-none" id="cards-view">
         @foreach ($users as $user)
         <article class="col-12 col-sm-6 col-lg-4 p-2">
-            <div class="card h-100 bg-transparent text-dark" data-view-link="">
-                <div class="card-body" ondblclick="toview(event, 'url' )">
+            <div class="card h-100 bg-transparent text-dark" data-view-link="{{ route('users.show', $user->id) }}">
+                <div class="card-body" ondblclick="toview( event , '{{ route('users.show', $user->id) }}' )">
                     <div class="d-flex flex-row gap-2 align-items-center">
                         <img class="p-1 rounded-circle" src="https://picsum.photos/600/400?random={{ rand() }}" alt="User profile" style="width:100px;height:100px">
                         <h5 class="flex-grow-1 card-title d-flex flex-column">
@@ -67,18 +68,18 @@
                         <span class="badge bg-secondary mb-2">ID: {{ $user->id }}</span>
                     </div>
 
-                    <p class="card-text"> {{ $user->bio}} </p>
+                    <p class="card-text"> {{ $user->bio }} </p>
                 </div>
                 @auth
                     @if(Auth::user()->id == $user->id || Auth::user()->is_admin)
                         <div class="card-footer border-top d-flex gap-2">
                             {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i>    View</a> --}}
-                            <a class="btn btn-outline-warning btn-sm flex-grow-1 edit-link" href=""> <i class="bi bi-pencil"></i> Edit</a>
+                            <a class="btn btn-outline-warning btn-sm flex-grow-1 edit-link" href="{{ route('users.edit',$user->id) }}"> <i class="bi bi-pencil"></i> Edit</a>
                             <button
                                 type="button" 
                                 class="btn btn-outline-danger btn-sm flex-grow-1 del-btn" 
                                 data-bs-toggle="modal" 
-                                data-bs-target="#delete-post-{{ $user->id }}-modal">
+                                data-bs-target="#delete-user-{{ $user->id }}-modal">
                                 <i class="bi bi-trash"></i> Delete
                             </button>
                         </div>
@@ -92,14 +93,13 @@
 
     {{-- Table UI --}}
     <section class="overflow-auto mw-100">
-        <table class="table table-hover mt-2 d-none" id="cards-view">
+        <table class="table table-hover mt-2 d-none" id="table-view">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>username</th>
                     <th>Name</th>
+                    <th>Username</th>
                     <th>Email</th>
-                    <th>Bio</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -112,21 +112,20 @@
                     </tr>
                 @endif
                 @foreach ($users as $user)
-                <tr onclick="toview(event, 'url', true)">
+                <tr onclick="toview( event , '{{ route('users.show', $user->id) }}' , true )">
                     <td>{{ $user->id }}</td>
                     <td>{{ $user->username }}</td>
                     <td>{{ $user->name }}</td>
-                    <td>{{ $user->Email }}</td>
-                    <td>{{ $user->bio }}</td>
+                    <td>{{ $user->email }}</td>
                     <td>
                         @auth
                             @if(Auth::user()->id == $user->id || Auth::user()->is_admin)
-                            <a class="btn btn-outline-warning btn-sm" href=""> <i class="bi bi-pencil"></i></a>
+                            <a class="btn btn-outline-warning btn-sm" href="{{ route('users.edit',$user->id) }}"> <i class="bi bi-pencil"></i></a>
                             <button 
                                 type="button" 
                                 class="btn btn-outline-danger btn-sm" 
                                 data-bs-toggle="modal" 
-                                data-bs-target="#delete-post-{{ $user->id }}-modal">
+                                data-bs-target="#delete-user-{{ $user->id }}-modal">
                                     <i class="bi bi-trash"></i>
                             </button>
                             @endif
@@ -143,22 +142,23 @@
         {{ $users->links() }}
     </section>
 
-    {{-- <x-slot:modals>
+    <x-slot:modals>
         <div class="position-fixed bottom-0 end-0 m-1">
             <button id="go-up" type="button" class="btn btn-outline-primary" style="display: none">
                 <i class="bi bi-arrow-up-circle"></i>
             </button>
         </div>
-        @foreach ($posts as $post)
-            @if (Auth::user()->id == $post->user->id || Auth::user()->is_admin)
-                <x-modals.delete-post-modal :post="$post"/>
-            @endif
-        @endforeach
-
-    </x-slot:modals> --}}
+        @auth
+           @foreach ($users as $user)
+                @if (Auth::user()->id == $user->id || Auth::user()->is_admin)
+                    <x-modals.delete-user-modal :user="$user"/>
+                @endif
+            @endforeach 
+        @endauth
+    </x-slot:modals>
 
     <x-slot:scripts>
-        <script src="{{ asset('js/posts/index.js') }}"></script>
+        <script src="{{ asset('js/index.js') }}"></script>
     </x-slot:scripts>
 
 </x-layouts.app>

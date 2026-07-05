@@ -45,7 +45,7 @@
             <p class="text-muted text-center">Haven't registred yet? <a class="" href="{{ route('register') }}">register</a></p>  
 
             
-            @error('credentials')
+            @error('auth')
                 <div class="alert alert-danger fade show alert-dismissible">
                     {{ $message }}
                     <button type="button" data-bs-dismiss="alert" class="btn-close"></button>

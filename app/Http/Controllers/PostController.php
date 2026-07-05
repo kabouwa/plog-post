@@ -7,6 +7,15 @@ use App\Models\User ;
 use App\Models\Post ;
 
 // dd (die document : Stop all code and output a value for fast debugging)
+/**
+ * Redirection :
+ * redirect('https://www.google.com/')
+ * redirect()->back()
+ * redirect()->route('posts.index)  OR to_route('posts.index)
+ * ->with('success','Post created!')
+ * ->withInputs
+ */
+
 class PostController extends Controller
 {
     public function index(Request $request){
@@ -25,7 +34,8 @@ class PostController extends Controller
             ->count();
         }else if($request->filled('q')){
             // Jointure
-            $posts = Post::where('title', 'LIKE', '%' . request('q') . '%')
+            $posts = Post::where('id', request('q'))
+            ->orWhere('title', 'LIKE', '%' . request('q') . '%')
             ->paginate(15);
             $total = Post::count('id');
         }else{
@@ -152,7 +162,7 @@ class PostController extends Controller
         // Or Directly
         $post->delete();
         
-        return redirect()->back()
+        return redirect()->route('posts.index')
                 ->with('alert','Post Deleted successfuly')
                 ->with('accent','Done')
                 ->with('type','success');;

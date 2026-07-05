@@ -13,34 +13,40 @@
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('users.index') }}">Users</a>
+                        <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}" href="{{ route('users.index') }}">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('posts.index') }}">Posts</a>
+                        <a class="nav-link {{ request()->routeIs('posts.index') && !request()->filled('profile') ? 'active' : '' }}" href="{{ route('posts.index') }}">Posts</a>
                     </li>
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('posts.index',['profile' => Auth::user()->username]) }}">My posts</a>
+                            <a class="nav-link {{ request()->routeIs('posts.index') && request()->filled('profile') ? 'active' : '' }}" href="{{ route('posts.index',['profile' => Auth::user()->username]) }}">My posts</a>
                         </li>
                     @endauth
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('posts.create') }}">Create Post</a>
+                        <a class="nav-link {{ request()->routeIs('posts.create') ? 'active' : '' }}" href="{{ route('posts.create') }}">Create Post</a>
                     </li>
                 </ul>
                 
                 <ul class="navbar-nav ms-auto">
                     @auth
                         <li class="nav-item mx-auto d-flex justify-content-between gap-2">
-                            <a class="btn btn-outline-secondary px-4 flex-grow-1 disabled" href="#">Profile</a>
-                            <form method="POST" action="{{ route('logout') }}" class="d-inline-block">
+                            <a class="btn btn-primary px-4 flex-grow-1 " href="{{ route('users.show', Auth::user()->id) }}">{{ Auth::user()->username }}'s profile</a>
+                            {{-- <form method="POST" action="{{ route('logout') }}" class="d-inline-block">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-danger px-4 flex-grow-1">Logout</button>
-                            </form>
+                            </form> --}}
+                            <button 
+                                type="button" 
+                                class="btn btn-outline-danger px-4 flex-grow-1"
+                                data-bs-toggle="modal"
+                                data-bs-target="#logout-modal"
+                            >Logout</button>
                         </li>
                     @else
                         <li class="nav-item mx-auto d-flex justify-content-between gap-2">
-                            <a class="btn btn-outline-secondary px-5 flex-grow-1" href="{{ route('login') }}">Login</a>
-                            <a class="btn btn-primary px-5 flex-grow-1" href="{{ route('register') }}">Register</a>
+                            <a class="btn btn-outline-secondary px-5 flex-grow-1 {{ request()->routeIs('login') ? 'disabled bg-secondary text-white'  : '' }}" href="{{ route('login') }}">Login</a>
+                            <a class="btn btn-primary px-5 flex-grow-1 {{ request()->routeIs('register') ? 'disabled '  : '' }}" href="{{ route('register') }}">Register</a>
                         </li>
                     @endauth
                 </ul>

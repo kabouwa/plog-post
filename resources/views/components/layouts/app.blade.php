@@ -38,6 +38,9 @@
     </main>
 
     <div id="modals">
+        @auth
+            <x-modals.logout-modal></x-modals.logout-modal>
+        @endauth
         {{ $modals }}
     </div>
 
