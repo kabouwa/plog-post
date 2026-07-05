@@ -1,5 +1,5 @@
 {{-- Class Component --}}
-<form class="form" method="POST" action="{{ $action }}">
+<form class="form" method="POST" action="{{ $action }}" enctype="multipart/form-data">
     @csrf
     @method($method)
     <div class="form-group mb-4">
@@ -18,8 +18,19 @@
         <label for="description" class="form-label">Description*</label>
         <div class="input-group">
             <span class="input-group-text">D</span>
-            <textarea type="text" class="form-control @error('description') is-invalid @enderror" name="description" id="description" rows="3">{{ old('description',$descValue) }}</textarea>
+            <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" rows="3">{{ old('description',$descValue) }}</textarea>
             @error('description')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+    </div>
+    <div class="form-group mb-4">
+        <label for="image" class="form-label">Image*</label>
+        <div class="input-group">
+            <input type="file" class="form-control @error('image') is-invalid @enderror" name="image" id="image" rows="3">
+            @error('image')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>

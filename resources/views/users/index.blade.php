@@ -57,7 +57,7 @@
     <section class="row d-none" id="cards-view">
         @foreach ($users as $user)
         <article class="col-12 col-sm-6 col-lg-4 p-2">
-            <div class="card h-100 bg-transparent text-dark" data-view-link="{{ route('users.show', $user->id) }}">
+            <div class="card h-100 bg-transparent text-dark" data-view-link={{ route('users.show', $user->id) }}>
                 <div class="card-body" ondblclick="toview( event , '{{ route('users.show', $user->id) }}' )">
                     <div class="d-flex flex-row gap-2 align-items-center">
                         <img class="p-1 rounded-circle" src="https://picsum.photos/600/400?random={{ rand() }}" alt="User profile" style="width:100px;height:100px">
@@ -120,7 +120,7 @@
                     <td>
                         @auth
                             @if(Auth::user()->id == $user->id || Auth::user()->is_admin)
-                            <a class="btn btn-outline-warning btn-sm" href="{{ route('users.edit',$user->id) }}"> <i class="bi bi-pencil"></i></a>
+                            <a class="btn btn-outline-warning btn-sm" href={{ route('users.edit',$user->id) }}> <i class="bi bi-pencil"></i></a>
                             <button 
                                 type="button" 
                                 class="btn btn-outline-danger btn-sm" 

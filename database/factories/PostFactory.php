@@ -19,9 +19,10 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => User::inRandomOrder()->first()->id,
             'title' => fake()->realTextBetween(40,100),
             'description' => fake()->realTextBetween(100,500),
-            'user_id' => User::inRandomOrder()->first()->id
+            'image_path' => 'https://picsum.photos/900/1200?random=' . rand(),
         ];
     }
 }

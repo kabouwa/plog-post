@@ -44,6 +44,8 @@ class LoginController extends Controller
         $request->session()->invalidate();
         // Generate new session token 
         $request->session()->regenerateToken();
-        return to_route('posts.index');
+        
+        return to_route('login')
+        ->with('success', 'You have been logged out successfully.');
     }
 }

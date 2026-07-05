@@ -5,7 +5,7 @@
     <x-slot:head>
         <style>
             .card-header{
-                background-image: url('/images/posts/background.png');
+                background-image: url('/images/backgrounds/background.png');
                 background-position: center;
                 background-size: cover
             }
@@ -26,30 +26,36 @@
             <span class="fs-5 fw-semibold">Post Info</span>
             <span class="badge bg-secondary">#{{ $post->id }}</span>
         </div>
-        <div class="card-body">
-            <h5 class="card-title">{{ $post->title }}</h5>
-            <p class="card-text text-secondary">{{ $post->description }}</p>
-            @auth
-                @if(Auth::user()->id == $post->creator->id || Auth::user()->is_admin)
-                    <hr>
-                    <div class="row">
-                        <div class="col-12 col-sm-6 col-lg-3 my-1">
-                            <a class="btn btn-warning w-100" id="edit-link" href="{{ route('posts.edit', $post->id ) }}"> <i class="bi bi-pencil"></i> Edit</a>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-3 my-1">
-                            <button 
-                                type="button" 
-                                class="btn btn-outline-danger w-100" 
-                                id="del-btn"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#delete-post-{{ $post->id }}-modal">
-                                <i class="bi bi-trash"></i> Delete
-                            </button>
-                        </div>
-                    </div>
-                @endif
-            @endauth
+        <div class="card-body row">
+            <div class="col-12 col-md-6 col-lg-5">
+                <img src={{ asset('storage/' . $post->image_path) }} class="rounded-2 w-100 mw-100 mb-3" alt="Post Image">
+            </div>
+            <div class="col-12 col-md-6 col-lg-7 d-flex flex-column justify-content-center">
+                <h5 class="card-title">{{ $post->title }}</h5>
+                <p class="card-text text-secondary ms-2">{{ $post->description }}</p>
+            </div>
         </div>
+        @auth
+            @if(Auth::user()->id == $post->creator->id || Auth::user()->is_admin)
+            <div class="card-footer bg-transparent">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-3 my-1">
+                        <a class="btn btn-warning w-100" id="edit-link" href={{ route('posts.edit', $post->id ) }}> <i class="bi bi-pencil"></i> Edit</a>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 my-1">
+                        <button 
+                            type="button" 
+                            class="btn btn-outline-danger w-100" 
+                            id="del-btn"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#delete-post-{{ $post->id }}-modal">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            @endif
+        @endauth
     </article>
 
     <article class="card mb-4 shadow-sm glass-card">
@@ -57,7 +63,6 @@
             <span class="fs-5 fw-semibold">Post Creator Info</span>
         </div>
         <div class="card-body">
-
             <div class="d-flex align-items-center mb-3" onclick="toview(event , '{{ route('users.show', $post->user->id) }}' )" style="cursor: pointer">
                 <div class="bg-primary-subtle text-primary-emphasis rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
                     <i class="bi bi-person-fill fs-4"></i>

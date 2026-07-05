@@ -33,7 +33,7 @@ class UserFactory extends Factory
             'bio' => Str::limit(fake()->sentences(nb : rand(2,5), asText : true), 150, '') ,
             // Or : 'bio' => Str::random(150),
             'is_admin' => false,
-
+            
             'email_verified_at' => null,
             'remember_token' => Str::random(10),
         ];

@@ -51,7 +51,11 @@
                     <button type="button" data-bs-dismiss="alert" class="btn-close"></button>
                 </div>
             @enderror
-            
+            @if (session('success'))
+                <x-modals.alert accent="Done">
+                    {{ session('success') }}
+                </x-modals.alert>
+            @endif
         </div>
     </div>
     <x-slot:scripts>

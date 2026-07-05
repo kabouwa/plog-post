@@ -51,5 +51,10 @@ Route::put(uri : '/posts/{post}',      action : [PostController::class, 'update'
 
 Route::delete(uri : '/posts/{post}',   action : [PostController::class, 'destroy'])->name('posts.destroy')->where('post','\d+')->middleware('auth');
 
-
 // '/posts/{post:title}' to change default key in uri :nameColumn
+
+
+/**
+ * REST API:
+ */
+Route::get(uri : '/api/v1/users',   action : [ App\Http\Controllers\Api\UserController::class, 'index' ]);

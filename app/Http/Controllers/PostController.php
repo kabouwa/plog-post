@@ -83,8 +83,17 @@ class PostController extends Controller
         $validated  = request()->validate([
             'title' => ['required','string','min:4','max:150'],
             'description' => ['required','string','min:4','max:500'],
-            // 'creator' => ['required','integer','exists:users,id'],
+            'image' => ['image','mimes:png,jpg,jpeg,svg','max:10240'] // MAX par KB
         ]);
+        // Save image after validated it store(folderName , fileSystemDisk)
+        $img_path = request()->file('image')->store('posts','public'); // Generate a unique file name 
+        // Or with custom name
+        /**
+         * $image = request()->file('image');
+         * $img_path = 'post-img-id' . request()->user()->id . rand() .'-' . $image->getClientOriginalName();
+         * $image->storeAs('posts',$img_path,'public');
+         */
+        
         // Step 2 - Get Data
         // $r = request();
 
@@ -106,10 +115,10 @@ class PostController extends Controller
 
         // Just Take Validated data
         $post = Post::create([
+            "user_id"     => request()->user()->id,
             "title"       => $validated['title'],
             "description" => $validated['description'],
-            // "user_id" => $validated['creator'],
-            "user_id"     => request()->user()->id
+            "image_path"  => $img_path,
         ]);
         
         // Step 4 - Redirect To Created Post View
@@ -161,7 +170,7 @@ class PostController extends Controller
 
         // Or Directly
         $post->delete();
-        
+
         return redirect()->route('posts.index')
                 ->with('alert','Post Deleted successfuly')
                 ->with('accent','Done')

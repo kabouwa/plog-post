@@ -9,7 +9,7 @@
         <div class="form-group my-2">
             <label class="form-label" for="name">Name :</label>
             <div class="input-group">
-                <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name" placeholder="name" value="{{ old('name',$user->name) }}">
+                <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name" placeholder="name" value={{ old('name',$user->name) }}>
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>  
                 @enderror
@@ -19,7 +19,7 @@
         <div class="form-group my-2">
             <label class="form-label" for="email">Email :</label>
             <div class="input-group">
-                <input class="form-control @error('email') is-invalid @enderror" type="text" name="email" id="email" placeholder="email" value="{{ old('email',$user->email) }}">
+                <input class="form-control @error('email') is-invalid @enderror" type="text" name="email" id="email" placeholder="email" value={{ old('email',$user->email) }}>
                 @error('email')
                     <div class="invalid-feedback">{{ $message }}</div>  
                 @enderror
@@ -29,7 +29,7 @@
         <div class="form-group my-2">
             <label class="form-label" for="username">Username :</label>
             <div class="input-group">
-                <input class="form-control @error('username') is-invalid @enderror" type="text" name="username" id="username" placeholder="username" value="{{ old('username',$user->username) }}">
+                <input class="form-control @error('username') is-invalid @enderror" type="text" name="username" id="username" placeholder="username" value={{ old('username',$user->username) }}>
                 @error('username')
                     <div class="invalid-feedback"> {{ $message }}</div>  
                 @enderror
