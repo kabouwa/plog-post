@@ -58,3 +58,4 @@ Route::delete(uri : '/posts/{post}',   action : [PostController::class, 'destroy
  * REST API:
  */
 Route::get(uri : '/api/v1/users',   action : [ App\Http\Controllers\Api\UserController::class, 'index' ]);
+Route::get(uri : '/api/v1/posts',   action : [ App\Http\Controllers\Api\PostController::class, 'index' ]);

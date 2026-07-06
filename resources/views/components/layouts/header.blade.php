@@ -57,11 +57,16 @@
                     <button class="btn @auth btn-outline-primary @else btn-primary @endauth dropdown-toggle px-5" type="button" data-bs-toggle="dropdown">
                         @auth {{ Auth::user()->username }} @else Account  @endauth
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu w-100">
                         @auth
+                            <li class="dropdown-header"><h6>Account</h6></li>
                             <li>
-                                <a class="dropdown-item" href="{{ route('users.show', Auth::user()->id) }}">Profile</a>
+                                <a class="dropdown-item {{ request()->routeIs('users.show') ? 'active' : '' }}" href="{{ route('users.show', Auth::user()->id) }}">Profile</a>
                             </li>
+                            <li>
+                                <a class="dropdown-item {{ request()->routeIs('users.edit') ? 'active' : '' }}" href="{{ route('users.edit', Auth::user()->id) }}">Edit profile</a>
+                            </li>
+                            <li class="dropdown-divider"></li>
                             <li>
                                 <button 
                                     type="button" 
@@ -72,13 +77,12 @@
                             </li>
                         @else
                             <li>
-                                <a class="dropdown-item {{ request()->routeIs('login') ? 'disabled' : '' }}" href={{ route('login') }}>Login</a>
+                                <a class="dropdown-item {{ request()->routeIs('login') ? 'active' : '' }}" href={{ route('login') }}>Login</a>
                             </li>
                             <li>
-                                <a class="dropdown-item {{ request()->routeIs('register') ? 'disabled '  : '' }}" href={{ route('register') }}>Register</a>
+                                <a class="dropdown-item {{ request()->routeIs('register') ? 'activr '  : '' }}" href={{ route('register') }}>Register</a>
                             </li>
                         @endauth
-
                     </ul>
                 </div>
             </div>

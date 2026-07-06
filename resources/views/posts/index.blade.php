@@ -29,13 +29,14 @@
 
     <div class="row my-2">
         <div class="col-12">
-            <form action="">
+            <form action="" class="position-relative">
                 <div class="input-group">
-                    <input class="form-control" type="search" name="q" placeholder="Search for a title" value="{{ request('q') }}">
+                    <input class="form-control" type="search" name="q" placeholder="Search for a title" value="{{ request('q') }}" id="search">
                     <span class="input-group-text bg-primary" style="width:20%; cursor: pointer;" onclick="$(this).closest('form').submit()">
                         <i class="bi bi-search text-white mx-auto"></i>
                     </span>
                 </div>
+                <ul class="position-absolute w-100 mt-2 rounded-3 py-1 dropdown-menu d-block" id="search-results"></ul>
             </form>
         </div>
     </div>
@@ -164,6 +165,7 @@
 
     <x-slot:scripts>
         <script src="{{ asset('js/index.js') }}"></script>
+        <script src="{{ asset('js/posts/search.js') }}"></script>
     </x-slot:scripts>
 
 </x-layouts.app>

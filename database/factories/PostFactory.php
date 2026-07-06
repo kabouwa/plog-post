@@ -22,7 +22,7 @@ class PostFactory extends Factory
             'user_id' => User::inRandomOrder()->first()->id,
             'title' => fake()->realTextBetween(40,100),
             'description' => fake()->realTextBetween(100,500),
-            'image_path' => 'https://picsum.photos/900/1200?random=' . rand(),
+            'image_path' => 'posts/post-no-image.png',
         ];
     }
 }
