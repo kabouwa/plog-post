@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User ;
 use App\Models\Post ;
+use Illuminate\Support\Facades\Storage;
 
 // dd (die document : Stop all code and output a value for fast debugging)
 /**
@@ -66,7 +67,7 @@ class PostController extends Controller
         return view(view : "posts.create", data : compact('users') );
     }
 
-    public function store(){
+    public function store(Request $request){
         // dd(request(), request()->server);
 
         // Get all form fields :
@@ -86,7 +87,10 @@ class PostController extends Controller
             'image' => ['image','mimes:png,jpg,jpeg,svg','max:10240'] // MAX par KB
         ]);
         // Save image after validated it store(folderName , fileSystemDisk)
-        $img_path = request()->file('image')->store('posts','public'); // Generate a unique file name 
+        $img_path = request()->hasFile('image')
+            ?  request()->file('image')->store('posts','public') 
+            : "posts/post-no-image.png"; // Generate a unique file name 
+       
         // Or with custom name
         /**
          * $image = request()->file('image');
@@ -146,16 +150,22 @@ class PostController extends Controller
         $validated  = request()->validate([
             'title' => ['required','string','min:4','max:150'],
             'description' => ['required','string','min:4','max:500'],
-            // 'creator' => ['required','integer','exists:users,id'],
+            'image' => ['image','mimes:png,jpg,jpeg,svg','max:10240']
         ]);
 
-        $post->update([
-            "title"       => $validated['title'],
-            "description" => $validated['description'],
-            // "user_id" => $validated['creator'],
-        ]);
+        if(request()->hasFile('image')){
+            Storage::disk('public')->move(
+                $post->image_path,
+                'posts/trash/' . basename($post->image_path) 
+            );
+            $validated['image_path'] = request()->file('image')->store('posts','public');
+        }else{
+            unset($validated['image']);
+        }
 
-        return to_route('posts.show', $post->id)
+        $post->update($validated);
+
+        return to_route('posts.show', $post)
                 ->with('alert','Post Updated successfuly')
                 ->with('accent','Done')
                 ->with('type','success');

@@ -59,7 +59,7 @@
         @foreach ($posts as $post)
         <article class="col-12 col-sm-6 col-lg-4 p-2">
             <div class="card h-100 bg-transparent text-dark" data-view-link={{ route('posts.show', $post->id ) }}>
-                <img class="card-img p-1 rounded-3" src={{ asset('storage/' . $post->image_path)  }} alt="Post picture">
+                <img class="card-img p-1 rounded-3" src={{ asset( 'storage/' .  $post->image_path)  }} alt="Post picture">
 
                 <div class="card-body" onclick="toview(event, '{{ route('posts.show', $post->id ) }}' )" >
                     <span class="badge bg-secondary mb-2">ID: {{ $post->id }}</span>

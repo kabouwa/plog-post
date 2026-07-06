@@ -17,7 +17,8 @@ class PostForm extends Component
         public $titleValue = "", 
         public $descValue = "", 
         public $postId = 0,
-        public $creatorId = 0
+        public $creatorId = 0,
+        public $imgPath = '',
     ){
     }
     public function render(): View|Closure|string

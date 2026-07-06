@@ -28,7 +28,8 @@
                     </li>
                 </ul>
                 
-                <ul class="navbar-nav ms-auto">
+                {{-- Buttons UI --}}
+                <ul class="navbar-nav ms-auto d-none">
                     @auth
                         <li class="nav-item mx-auto d-flex justify-content-between gap-2">
                             <a class="btn btn-primary px-4 flex-grow-1 " href="{{ route('users.show', Auth::user()->id) }}">{{ Auth::user()->username }}'s profile</a>
@@ -50,6 +51,36 @@
                         </li>
                     @endauth
                 </ul>
+
+                {{-- Dropdown UI --}}
+                <div class="dropdown ms-auto">
+                    <button class="btn @auth btn-outline-primary @else btn-primary @endauth dropdown-toggle px-5" type="button" data-bs-toggle="dropdown">
+                        @auth {{ Auth::user()->username }} @else Account  @endauth
+                    </button>
+                    <ul class="dropdown-menu">
+                        @auth
+                            <li>
+                                <a class="dropdown-item" href="{{ route('users.show', Auth::user()->id) }}">Profile</a>
+                            </li>
+                            <li>
+                                <button 
+                                    type="button" 
+                                    class="dropdown-item text-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#logout-modal"
+                                >Logout</button>
+                            </li>
+                        @else
+                            <li>
+                                <a class="dropdown-item {{ request()->routeIs('login') ? 'disabled' : '' }}" href={{ route('login') }}>Login</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {{ request()->routeIs('register') ? 'disabled '  : '' }}" href={{ route('register') }}>Register</a>
+                            </li>
+                        @endauth
+
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>

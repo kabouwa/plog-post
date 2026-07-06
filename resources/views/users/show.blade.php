@@ -5,7 +5,7 @@
     <x-slot:head>
         <style>
             .card-header{
-                background-image: url('/images/posts/background.png');
+                background-image: url('/images/backgrounds/background.png');
                 background-position: center;
                 background-size: cover
             }
@@ -27,14 +27,14 @@
             <span class="badge bg-secondary">#{{ $user->id }}</span>
         </div>
         <div class="card-body">
-            <div class="card-title d-flex flex-row align-items-center gap-4">
-                <img class="p-1 rounded-circle" src="https://picsum.photos/600/400?random={{ rand() }}" alt="User profile" style="width:100px;height:100px">
-                <div>
-                   <h5>Username : {{ $user->username }}</h5>
-                    <p class="text-muted">Contact : {{ $user->email }}</p> 
-                </div>
+
+            <div class="card-text text-center">
+                <img class="p-1 mb-3 rounded-5 mw-100" src="https://picsum.photos/600/400?random={{ rand() }}" alt="User profile" >
+                <p class="h5 m-0">{{ '@' . $user->username }}</p>
+                <p class="text-dark m-0">Created at : {{ $user->created_at->format('d-m-Y') }}</p>
+                <p class="text-dark m-0">Email : <a href="mailto:{{ $user->email }}" class="nav-link d-inline">{{ $user->email }}</a></p> 
+                <p class="text-secondary m-0">Bio : {{ $user->bio }} </p>   
             </div>
-            <div class="card-text text-secondary mt-2"> Bio : {{ $user->bio }} </div>
 
             <hr>
             <div class="row">

@@ -28,7 +28,7 @@
         </div>
         <div class="card-body row">
             <div class="col-12 col-md-6 col-lg-5">
-                <img src={{ asset('storage/' . $post->image_path) }} class="rounded-2 w-100 mw-100 mb-3" alt="Post Image">
+                <img src={{ asset( 'storage/' . $post->image_path) }} class="rounded-2 w-100 mw-100 mb-3" alt="Post Image">
             </div>
             <div class="col-12 col-md-6 col-lg-7 d-flex flex-column justify-content-center">
                 <h5 class="card-title">{{ $post->title }}</h5>

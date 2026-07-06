@@ -13,6 +13,7 @@
 
     <x-post-form 
         :action="route('posts.store')"
+        :imgPath="asset('storage/posts/post-no-image.png')"
     />
 
     @if($errors->any())
@@ -29,5 +30,6 @@
 
     <x-slot:scripts>
         <script src="{{ asset('js/posts/form.js') }}"></script>
+        <script src="{{ asset('js/img-preview.js') }}"></script>
     </x-slot:scripts>
 </x-layouts.app>

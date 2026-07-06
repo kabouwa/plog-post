@@ -16,6 +16,7 @@
         submitColor="success"
         :postId="$post->id"
         :creatorId="$post->user_id"
+        :imgPath="asset( 'storage/' . $post->image_path)"
     />
 
     @if ($errors->any())
@@ -31,5 +32,6 @@
 
     <x-slot:scripts>
         <script src="{{ asset('js/posts/form.js') }}"></script>
+        <script src="{{ asset('js/img-preview.js') }}"></script>
     </x-slot:scripts>
 </x-layouts.app>
