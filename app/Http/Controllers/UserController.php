@@ -64,6 +64,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        Post::where('user_id',$user->id)->delete();
         $user->delete();
         return to_route('users.index')
                 ->with('alert','User Deleted successfuly')

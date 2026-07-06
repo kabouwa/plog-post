@@ -23,7 +23,7 @@ Route::get(uri : '/register',          action : [RegisterController::class,'crea
 Route::post(uri : '/register',         action : [RegisterController::class,'store'  ])->middleware('guest');
 
 
-// Users 
+// Users - Without grouping Routes
 Route::get(uri : '/users',             action : [UserController::class, 'index'  ])->name('users.index');
 
 Route::get(uri : '/users/{user}',      action : [UserController::class, 'show'   ])->name('users.show')->where('user','\d+');
@@ -35,23 +35,31 @@ Route::put(uri : '/users/{user}',      action : [UserController::class, 'update'
 Route::delete(uri : '/users/{user}',   action : [UserController::class, 'destroy'])->name('users.destroy')->where('user','\d+');
 
 
-//Posts
+//Posts - With grouping routes
+// Route::prefix('posts')->name('posts.')->group(function(){
+//     Route::controller(PostController::class)->group(function(){
+//         Route::get(uri : '/',            action : 'index'  )->name('index');
+        
+//         Route::get(uri : '/create',      action : 'create' )->name('create');
+        
+//         Route::post(uri : '/',           action : 'store'  )->name('store');
+        
+//         Route::get(uri : '/{post}',      action : 'show'   )->name('show'); // where not important if the route bind with modal (Post $post)
+        
+//         Route::get(uri : '/{post}/edit', action : 'edit'   )->name('edit');
+        
+//         Route::put(uri : '/{post}',      action : 'update' )->name('update');
+        
+//         Route::delete(uri : '/{post}',   action : 'destroy')->name('destroy');
+//         // '/posts/{post:title}' to change default key in uri :nameColumn
+//     });
+// });
+/**
+ * IF WE HAVE THE 7 METHODS (index/show/create/store/edit/update/destroy) IN OUR CONTROLLER. THEN THIS CONTROLLER IS A RESOURCE.
+ * WE SET UP ALL THEIR ROUTE IN ONE LINE WITH THE STATIC METHOD resource IN THE CLASS Routes
+ */
+Route::resource('posts',PostController::class);
 
-Route::get(uri : '/posts',             action : [PostController::class, 'index'  ])->name('posts.index');
-
-Route::get(uri : '/posts/create',      action : [PostController::class, 'create' ])->name('posts.create')->middleware('auth');
-
-Route::post(uri : '/posts',            action : [PostController::class, 'store'  ])->name('posts.store')->middleware('auth');
-
-Route::get(uri : '/posts/{post}',      action : [PostController::class, 'show'   ])->name('posts.show')->where('post','\d+'); // where not important if the route bind with modal (Post $post)
-
-Route::get(uri : '/posts/{post}/edit', action : [PostController::class, 'edit'   ])->name('posts.edit')->where('post','\d+')->middleware('auth');
-
-Route::put(uri : '/posts/{post}',      action : [PostController::class, 'update' ])->name('posts.update')->where('post','\d+')->middleware('auth');
-
-Route::delete(uri : '/posts/{post}',   action : [PostController::class, 'destroy'])->name('posts.destroy')->where('post','\d+')->middleware('auth');
-
-// '/posts/{post:title}' to change default key in uri :nameColumn
 
 
 /**

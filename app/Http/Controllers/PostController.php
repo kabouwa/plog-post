@@ -44,7 +44,6 @@ class PostController extends Controller
             ->paginate(15);
             $total = Post::count('id');
         }
-
         return view(view : 'posts.index', data : [
             "posts" => $posts,
             "total" => $total

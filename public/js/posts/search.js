@@ -22,7 +22,7 @@
         const posts = await getPosts(q)
         if(posts.length){
             output.html(
-                posts.map(post => `<li><a class="dropdown-item" href="/posts/${post.id}">${post.title}</a></li>`).join('')
+                posts.map(post => `<li class="w-100"><a class="dropdown-item" href="/posts/${post.id}">${post.title}</a></li>`).join('')
             )
             showOutput()
         }else{

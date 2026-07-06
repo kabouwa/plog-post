@@ -36,7 +36,7 @@
                         <i class="bi bi-search text-white mx-auto"></i>
                     </span>
                 </div>
-                <ul class="position-absolute w-100 mt-2 rounded-3 py-1 dropdown-menu d-block" id="search-results"></ul>
+                <ul class="position-absolute w-100 mt-2 rounded-3 py-1 dropdown-menu d-block overflow-hidden" id="search-results"></ul>
             </form>
         </div>
     </div>
