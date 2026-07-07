@@ -1,6 +1,6 @@
 // Form Functions validations
 
-const validateMinLength = (fields, min = 4) => {
+const validateMinLength = (fields, min = 3) => {
     if(!Array.isArray(fields)){
         $error = "fields parameter must be an array instance !"
         console.error($error)

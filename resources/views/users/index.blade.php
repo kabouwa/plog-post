@@ -59,7 +59,7 @@
             <div class="card h-100 bg-transparent text-dark" data-view-link={{ route('users.show', $user->id) }}>
                 <div class="card-body" ondblclick="toview( event , '{{ route('users.show', $user->id) }}' )">
                     <div class="d-flex flex-row gap-2 align-items-center">
-                        <img class="p-1 rounded-circle" src="https://picsum.photos/600/400?random={{ rand() }}" alt="User profile" style="width:100px;height:100px">
+                        <img class="p-1 rounded-circle" src={{ asset('storage/' . $user->profile_path) }} alt="User profile" style="width:100px;height:100px">
                         <h5 class="flex-grow-1 card-title d-flex flex-column">
                             {{ $user->name }}
                             <small class="text-muted">{{ $user->username }}</small>

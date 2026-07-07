@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -54,15 +55,18 @@ class UserController extends Controller
     {
         $this->AuthorizeAdminOrOwner($user);
         $validated = $request->validated();
-        $data = [
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'username' => $validated['username'],
-            'bio' => strlen($validated['bio']) ? $validated['bio'] : "No information."
-        ];
-        if ($request->filled('password')) $data['password'] = $validated['password'];
-
-        $user->update($data);
+        
+        if(empty($validated['password'])) unset($validated['password']);
+        if(isset($validated['profile'])){
+            if($user->profile_path !== 'users/default-profile.png'){
+                Storage::disk('public')->move(
+                    $user->profile_path,
+                    'users/trash/' . basename($user->profile_path)
+                );
+            }
+            $validated['profile_path'] = $request->file('profile')->store('users','public');
+        }
+        $user->update($validated);
 
         return to_route('users.show', $user->id)
                 ->with('alert','User Updated successfuly')
@@ -74,8 +78,27 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $this->AuthorizeAdminOrOwner($user);
+
+        $UserPosts = Post::where('user_id',$user->id)->get('image_path');
+        foreach($UserPosts as $post){
+            $path = $post->image_path;
+            if($path != 'posts/post-no-image.png'){
+                Storage::disk('public')->move(
+                    $path,
+                    'posts/trash/' . basename($path)
+                );
+            }
+        } 
+        if($user->profile_path){
+            Storage::disk('public')->move(
+                $user->profile_path,
+                'users/trash/' . basename($user->profile_path)
+            );
+        }
+
         Post::where('user_id',$user->id)->delete();
         $user->delete();
+
         return to_route('users.index')
                 ->with('alert','User Deleted successfuly')
                 ->with('accent','Done')

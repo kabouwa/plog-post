@@ -19,15 +19,10 @@ class RegisterController extends Controller
     public function store(RegisterRequest $request){
         // Validation
         $validated = $request->validated();
+        if(isset($validated['profile'])) $validated['profile_path'] = $request->file('profile')->store('users','public');
 
         // Insert in database
-        User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'username' => $validated['username'],
-            'password' => $validated['password'],
-            'bio' =>  'No information.'
-        ]);
+        User::create($validated);
 
         // Redirect to login
         return to_route('login')

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -13,19 +15,19 @@ Route::get(uri : '/', action : function(){
 });
 
 
-// Login - logout - unique middleware
+// * Login - logout - unique middleware
 Route::get(uri  : '/login',            action : [LoginController::class,'create'    ])->name('login')   ->middleware('guest');
 Route::post(uri : '/login',            action : [LoginController::class,'store'     ])                  ->middleware('guest');
 Route::post(uri : '/logout',           action : [LoginController::class,'destroy'   ])->name('logout')  ->middleware('auth');
 
-// Register - grouping middleware
+// * Register - grouping middleware
 Route::middleware('guest')->group(function (){
     Route::get(uri : '/register',          action : [RegisterController::class,'create' ])->name('register');
     Route::post(uri : '/register',         action : [RegisterController::class,'store'  ]);
 });
 
 
-// Users - Without grouping Routes
+// * Users - Without grouping Routes
 Route::get(uri : '/users',             action : [UserController::class, 'index'  ])->name('users.index');
 
 Route::get(uri : '/users/{user}',      action : [UserController::class, 'show'   ])->name('users.show');
@@ -36,7 +38,7 @@ Route::put(uri : '/users/{user}',      action : [UserController::class, 'update'
 
 Route::delete(uri : '/users/{user}',   action : [UserController::class, 'destroy'])->name('users.destroy') ->middleware('auth');
 
-// Users Represent a resource so we can create their route simply with :
+// * Users Represent a resource so we can create their route simply with :
 // Route::resource('users',UserController::class)->only(['index','show','edit','update','destroy']);
 
 
@@ -44,7 +46,7 @@ Route::delete(uri : '/users/{user}',   action : [UserController::class, 'destroy
 
 
 
-// Posts - With grouping routes middlewares in controller (BEST PRACTICE)
+// * Posts - With grouping routes middlewares in controller (BEST PRACTICE)
 
 // Route::prefix('posts')->name('posts.')->group(function(){
 //     Route::controller(PostController::class)->group(function(){
@@ -75,24 +77,98 @@ Route::resource('posts',PostController::class);
 
 
 
+/**
+ * * Optional Arguments and responses
+ */
+Route::get('/age/{age?}' , function($age = null){
+    return $age ? 'Your Age is : ' . $age : "No age is set !";
+})->where('age','\d+');
 
+/**
+ * * Route Information
+*/
+Route::prefix('route')->get('info' , function(){
+    dd(
+        Route::current(),
+        "Route Name : " . Route::currentRouteName(),
+        "Route Action : " . (Route::currentRouteAction() ?? "Null"), // null - no controller method or callback function name
+    );
+})->name('route.info');
+/**
+ * * Outside Redirection
+*/
+Route::get('wikipedia' , function(){
+    return redirect()->away('https://www.wikipedia.org/');
+});
+/**
+ * * Dependicie Injection
+ * create object in parameter instead of instance a new class
+ */
+Route::get('request', function(Request $request){ //
+    // $request = new Request();
+    return "Dependicie Injection" ;
+});
+/**
+ * * Request - Response :
+ * TEST URI : /input?id=53&name=Mohammed%20kabouwa&checkbox=true&date=7-7-2026
+ */
+Route::get('input', function(Request $request){ 
+    // Request 
+    $id = $request->integer('id');
+    $name = $request->string('name')->upper();
+    $date = $request->date('date')->addDays(20);
+    $checkbox = $request->float('checkbox');
+    $has = $request->has('file') ? 'Yes' : 'No';
+    $hasAny = $request->hasAny(['id','name']) ? 'Yes' : 'No';
+    $request->whenhas(['id','name'], function(){
+        echo '<h1>Request has The field ID AND NAME</h1>';
+    });
+    $responseHtml =  "
+Id : $id <br> 
+Name : $name <br> 
+Date : $date <br> 
+Checkbox: $checkbox <br>
+Uploaded File : $has <br>
+Request has field (id || name) : $hasAny <br>
+";
+    // Response
+   return new Response(content : $responseHtml, status : 500);
+});
+/**
+ * * Download - Read Files
+ */
+Route::prefix('download')->get('profile', function(){ 
+    // Display
+    // return response()->file(
+    //     file : 'storage/users/default-profile.png',
+    // );
+    // Download - and show 
+    return response()->download(
+        file : 'storage/users/default-profile.png',
+        name : 'profile',
+        disposition  : 'inline' // to show
+    );
+});
+/**
+ * * Cookies
+ */
+Route::prefix('cookie')->group(function (){
+    Route::get('get/{name}', function($name, Request $request){ 
+        $cookie = $request->cookie($name);
+        return 'The requested cookie is : ' . htmlspecialchars($cookie);
+    })->where('name','[a-zA-z0-9]+');
 
+    Route::get('set/{name}/{value}', function($name, $value){ 
+        $newCookie = cookie($name, $value, 60);
+        return response("The cookie with name : " . htmlspecialchars($name). " is set with the value " . htmlspecialchars($value) )->withCookie($newCookie);
+    })->where('name','[a-zA-z0-9]+')->where('value','[a-zA-z0-9]+');
 
+    Route::get('unset/{name}', function($name, Request $request){ 
+        return response("The cookie w is deleted successffuly !")
+            ->withCookie(Cookie::forget($name));
+    })->where('name','[a-zA-z0-9]+');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});
 
 
 

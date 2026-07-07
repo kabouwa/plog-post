@@ -24,13 +24,13 @@ class UpdateUserRequest extends FormRequest
     {
         $user = $this->route('user');
         return [
-            'name'     => 'required|between:4,35',
+            'name'     => 'required|between:3,35',
             'email'    => 'required|min:10|max:100|email|unique:users,email,' . $user->id,
             'username' => 'required|between:4,35|unique:users,username,' . $user->id,
             // 'password' => ['required','min:8','max:100','confirmed', Password::min(8)->letters()->numbers()->symbols()],
-            'password' => ['required','min:4','max:100','confirmed'],
-            'password_confirmation' => 'required',
-            'bio' => 'max:150'
+            'password' => 'nullable|min:8|max:100|confirmed',
+            'bio' => 'nullable|max:150',
+            'profile' => 'nullable|mimes:png,jpg,jpeg,svg|max:10240'
         ];
     }
 }

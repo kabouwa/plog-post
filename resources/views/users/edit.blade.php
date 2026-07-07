@@ -2,10 +2,19 @@
     title="Edit Profile"
     heading="Edit Profile"
 >
-    <form method="POST" action="{{ route('users.update', $user->id) }}" class="form p-1 mx-auto col-12 col-sm-8 col-lg-6">
+
+    <div class="text-center position-relative col-12 col-sm-6 col-lg-4 mx-auto" id="preview" >
+        <img 
+            class="rounded-circle img-fluid p-1 border border-2 border-secondary w-100 h-100 min-h-100 min-w-100"
+            src={{ asset('storage/' . $user->profile_path) }}
+            alt="Profile Image" 
+            style="min-height: 150px">
+        <label for="profile" class="btn btn-sm btn-primary py-1 px-2 position-absolute bottom-0 right-0"><i class="bi bi-pencil"></i> </label>
+    </div>
+    <form method="POST" action={{ route('users.update', $user->id) }} class="form p-1 mx-auto col-12 col-sm-8 col-lg-6" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-
+        <input type="file" name="profile" id="profile" hidden>
         <div class="form-group my-2">
             <label class="form-label" for="name">Name :</label>
             <div class="input-group">
@@ -75,5 +84,6 @@
     </form>
 
     <x-slot:scripts>
+        <script src={{ asset('js/img-preview.js') }}></script>
     </x-slot:scripts>
 </x-layouts.app>

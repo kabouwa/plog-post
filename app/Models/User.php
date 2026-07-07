@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 
-#[Fillable(['name', 'email', 'password','username','bio','is_admin','email_verified_at'])]
+#[Fillable(['name', 'email', 'password','username','bio','profile_path','is_admin','email_verified_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -37,6 +37,11 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function getProfilePathAttribute($value)
+    {
+        return $value ?? 'users/default-profile.png' ;
     }
 }
 

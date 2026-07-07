@@ -29,7 +29,7 @@
         <div class="card-body">
 
             <div class="card-text text-center">
-                <img class="p-1 mb-3 rounded-5 mw-100" src="https://picsum.photos/600/400?random={{ rand() }}" alt="User profile" >
+                <img class="p-1 mb-3 rounded-circle w-25 mw-100" src={{ asset('storage/' . $user->profile_path) }} alt="User profile" >
                 <p class="h5 m-0">{{ '@' . $user->username }}</p>
                 <p class="text-dark m-0">Created at : {{ $user->created_at->format('d-m-Y') }}</p>
                 <p class="text-dark m-0">Email : <a href="mailto:{{ $user->email }}" class="nav-link d-inline">{{ $user->email }}</a></p> 
