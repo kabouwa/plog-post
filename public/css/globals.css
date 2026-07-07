@@ -49,5 +49,6 @@ main{
     z-index: 999;
     opacity: 0;
     visibility: hidden;
+    top: 45px;
     transition : all 0.2s ease-in-out
 }

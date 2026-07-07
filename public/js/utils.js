@@ -64,3 +64,32 @@ const toview = (e,url,table=false) => {
     .addClass('btn-outline-primary')
     .click(passwordToggler)
 })();
+
+
+// title
+(function (){
+    const titles = $('span.title')
+    titles.attr('class','title bg-light rounded-2 p-2 position-absolute')
+    titles.css({
+        opacity : '0',
+        margin : '20px 3px',
+        visibility : 'hidden',
+        transition : 'all 0.2s ease',
+        zIndex : '800',
+    })
+    titles.parent().css('position','relative')
+    const showTitle = e => {
+        $(e.currentTarget).find('span').css({
+            opacity : '1',
+            visibility : 'visible'
+        })
+    }
+    const hideTitle = e => {
+        $(e.currentTarget).find('span').css({
+            opacity : '0',
+            visibility : 'hidden'
+        })
+    }
+    titles.parent().mouseover(showTitle)
+    titles.parent().mouseout(hideTitle)
+})();

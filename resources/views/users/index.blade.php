@@ -28,13 +28,12 @@
 
     <div class="row my-2">
         <div class="col-12">
-            <form action="">
-                <div class="input-group">
-                    <input class="form-control" type="search" name="q" placeholder="Search for a user" value="{{ request('q') }}">
-                    <span class="input-group-text bg-primary" style="width:20%; cursor: pointer;" onclick="$(this).closest('form').submit()">
-                        <i class="bi bi-search text-white mx-auto"></i>
-                    </span>
-                </div>
+            <form action="" class="position-relative d-flex gap-3">
+                <input class="form-control" type="search" name="q" placeholder="Search for a title" value="{{ request('q') }}" id="search">
+                <button type="submit" class="btn btn-primary bg-primary" style="width:20%; cursor: pointer;">
+                    <i class="bi bi-search text-white mx-auto"></i>
+                </button>
+                <ul class="position-absolute w-100 mt-2 rounded-3 py-1 dropdown-menu d-block overflow-hidden" id="search-results"></ul>
             </form>
         </div>
     </div>
@@ -118,6 +117,7 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>
+                        <a class="btn btn-outline-primary btn-sm" href={{ route('users.show',$user->id) }}><i class="bi bi-eye"></i></a>
                         @auth
                             @if(Auth::user()->id == $user->id || Auth::user()->is_admin)
                             <a class="btn btn-outline-warning btn-sm" href={{ route('users.edit',$user->id) }}> <i class="bi bi-pencil"></i></a>
@@ -159,6 +159,7 @@
 
     <x-slot:scripts>
         <script src="{{ asset('js/index.js') }}"></script>
+        <script src="{{ asset('js/users/search.js') }}"></script>
     </x-slot:scripts>
 
 </x-layouts.app>

@@ -6,10 +6,17 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    private function AuthorizeAdminOrOwner(User $user){
+        if(
+            Auth::user()->id !== $user->id
+            && !Auth::user()->is_admin
+        ) abort(403);
+    }
     public function index(Request $request)
     {
         // when add a condition to apply a query when it's true
@@ -39,11 +46,13 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        $this->AuthorizeAdminOrOwner($user);
         return view('users.edit',compact('user'));
     }
 
     public function update(User $user, UpdateUserRequest $request)
     {
+        $this->AuthorizeAdminOrOwner($user);
         $validated = $request->validated();
         $data = [
             'name' => $validated['name'],
@@ -64,6 +73,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        $this->AuthorizeAdminOrOwner($user);
         Post::where('user_id',$user->id)->delete();
         $user->delete();
         return to_route('users.index')

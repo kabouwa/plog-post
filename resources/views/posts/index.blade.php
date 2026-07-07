@@ -29,13 +29,11 @@
 
     <div class="row my-2">
         <div class="col-12">
-            <form action="" class="position-relative">
-                <div class="input-group">
-                    <input class="form-control" type="search" name="q" placeholder="Search for a title" value="{{ request('q') }}" id="search">
-                    <span class="input-group-text bg-primary" style="width:20%; cursor: pointer;" onclick="$(this).closest('form').submit()">
-                        <i class="bi bi-search text-white mx-auto"></i>
-                    </span>
-                </div>
+            <form action="" class="position-relative d-flex gap-3">
+                <input class="form-control" type="search" name="q" placeholder="Search for a title" value="{{ request('q') }}" id="search">
+                <button type="submit" class="btn btn-primary bg-primary" style="width:20%; cursor: pointer;">
+                    <i class="bi bi-search text-white mx-auto"></i>
+                </button>
                 <ul class="position-absolute w-100 mt-2 rounded-3 py-1 dropdown-menu d-block overflow-hidden" id="search-results"></ul>
             </form>
         </div>
@@ -100,6 +98,7 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Image</th>
                     <th>Title</th>
                     <th>Posted By</th>
                     <th>Created At</th>
@@ -115,13 +114,14 @@
                     </tr>
                 @endif
                 @foreach ($posts as $post)
-                <tr onclick="toview(event, '{{ route('posts.show', $post->id ) }}', true)">
+                <tr>
                     <td>{{ $post->id }}</td>
-                    <td>{{ $post->title }}</td>
+                    <td><img src={{ asset('storage/' . $post->image_path) }} alt="Post Image" class="rounded-circle table-img pointer"><span class="title">show image</span></td>
+                    <td class="pointer" onclick="toview(event, '{{ route('posts.show', $post->id ) }}', true)">{{ $post->title }}<span class="title">more</span></td>
                     <td>{{ $post->user->name }}</td>
                     <td>{{ $post->created_at->format('F d, Y') }}</td>
                     <td>
-                        {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i> View </a> --}}
+                        <a class="btn btn-outline-primary btn-sm flex-grow-1" href={{ route('posts.show', $post->id ) }}> <i class="bi bi-eye"></i></a>
                         @auth
                             @if(Auth::user()->id == $post->user->id || Auth::user()->is_admin)
                             <a class="btn btn-outline-warning btn-sm" href={{ route('posts.edit', $post->id ) }}> <i class="bi bi-pencil"></i></a>
@@ -145,6 +145,14 @@
     <section>
         {{ $posts->links() }}
     </section>
+    <div class="img-preview w-100 h-100 d-flex align-items-center justify-content-center p-4">
+        <div class="position-fixed text-white fs-2 pointer right-0 top-0">
+            <i class="bi bi-x-lg m-3"></i>
+        </div>
+        <img class="rounded-2 mw-100 mh-100" src="" alt="Post Image">
+    </div>
+
+
 
     <x-slot:modals>
         <div class="position-fixed bottom-0 end-0 m-1">

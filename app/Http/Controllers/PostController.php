@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User ;
 use App\Models\Post ;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 // dd (die document : Stop all code and output a value for fast debugging)
@@ -17,8 +20,21 @@ use Illuminate\Support\Facades\Storage;
  * ->withInputs
  */
 
-class PostController extends Controller
+class PostController extends Controller implements HasMiddleware
 {
+    public static function middleware() : array{
+        return [
+            new Middleware('auth' , only : ['create','store','edit','update','destroy'])
+        ];
+    }
+
+    private function AuthorizeAdminOrOwner(Post $post){
+        if(
+            Auth::user()->id !== $post->user_id
+            && !Auth::user()->is_admin
+        ) abort(403);
+    }
+
     public function index(Request $request){
         // SELECT * FROM Post (Without condition-filter-limit...)
         // $posts = Post::all();
@@ -132,12 +148,16 @@ class PostController extends Controller
     }
 
     public function edit(Post $post){
+        $this->AuthorizeAdminOrOwner($post);
+
         return view(view : "posts.edit", data : [
             "post" => $post
         ]);
     }
 
     public function update(Post $post){
+        $this->AuthorizeAdminOrOwner($post);
+        
         $r = request();
         // Method 1 : find with id then update
         // Post::find($post)->update([
@@ -153,10 +173,12 @@ class PostController extends Controller
         ]);
 
         if(request()->hasFile('image')){
-            Storage::disk('public')->move(
-                $post->image_path,
-                'posts/trash/' . basename($post->image_path) 
-            );
+            if($post->image_path !== 'posts/post-no-image.png'){
+                Storage::disk('public')->move(
+                    $post->image_path,
+                    'posts/trash/' . basename($post->image_path) 
+                );
+            }
             $validated['image_path'] = request()->file('image')->store('posts','public');
         }else{
             unset($validated['image']);
@@ -171,6 +193,7 @@ class PostController extends Controller
     }
 
     public function destroy(Post $post){
+        $this->AuthorizeAdminOrOwner($post);
         // Delete from Database with just Id of row
         // $post = Post::find($postId);
         // $post->delete();

@@ -18,7 +18,7 @@ class UserController extends Controller
                 ->orWhere('bio', 'LIKE', "%" . $request->q . "%");
         })
             ->orderByDesc('id')
-            ->paginate(10)
+            ->paginate(15)
             ->withQueryString();
 
         $total = User::count();

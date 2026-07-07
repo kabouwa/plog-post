@@ -1,0 +1,36 @@
+.btn {
+    border-radius: 25px;
+    padding: 10px 25px;
+    transition: all 0.25s ease;
+}
+.form-control{
+    border-radius: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.pointer{
+    cursor: pointer !important;
+}
+.top-0{ top: 0 }
+.bottom-0{ bottom: 0 }
+.left-0{ left: 0 }
+.right-0{ right: 0 }
+
+.pagination{
+    width: auto;
+}
+.page-item{
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.page-link{
+
+    flex-grow: 1;
+    height: auto;
+    border-radius: 25px;
+    padding: 10px !important;
+    margin: 0 10px;
+}

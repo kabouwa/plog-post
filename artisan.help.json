@@ -12,7 +12,8 @@
         "model Post -mcr // Create Model + Migration + Resource Controller",
         "request StorePostRequest",
         "factory PostFactory",
-        "seeder PostSeeder"
+        "seeder PostSeeder",
+        "component CreateForm"
     ],
 
     "migration" : [

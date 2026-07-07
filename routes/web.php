@@ -13,29 +13,39 @@ Route::get(uri : '/', action : function(){
 });
 
 
-// Login - logout
-Route::get(uri : '/login',             action : [LoginController::class,'create'    ])->name('login')   ->middleware('guest');
-Route::post(uri : '/login',            action : [LoginController::class,'store'     ])->middleware('guest');
+// Login - logout - unique middleware
+Route::get(uri  : '/login',            action : [LoginController::class,'create'    ])->name('login')   ->middleware('guest');
+Route::post(uri : '/login',            action : [LoginController::class,'store'     ])                  ->middleware('guest');
 Route::post(uri : '/logout',           action : [LoginController::class,'destroy'   ])->name('logout')  ->middleware('auth');
 
-// Register
-Route::get(uri : '/register',          action : [RegisterController::class,'create' ])->name('register')->middleware('guest');
-Route::post(uri : '/register',         action : [RegisterController::class,'store'  ])->middleware('guest');
+// Register - grouping middleware
+Route::middleware('guest')->group(function (){
+    Route::get(uri : '/register',          action : [RegisterController::class,'create' ])->name('register');
+    Route::post(uri : '/register',         action : [RegisterController::class,'store'  ]);
+});
 
 
 // Users - Without grouping Routes
 Route::get(uri : '/users',             action : [UserController::class, 'index'  ])->name('users.index');
 
-Route::get(uri : '/users/{user}',      action : [UserController::class, 'show'   ])->name('users.show')->where('user','\d+');
+Route::get(uri : '/users/{user}',      action : [UserController::class, 'show'   ])->name('users.show');
 
-Route::get(uri : '/users/{user}/edit', action : [UserController::class, 'edit'   ])->name('users.edit')->where('user','\d+');
+Route::get(uri : '/users/{user}/edit', action : [UserController::class, 'edit'   ])->name('users.edit')    ->middleware('auth');
 
-Route::put(uri : '/users/{user}',      action : [UserController::class, 'update'   ])->name('users.update')->where('user','\d+');
+Route::put(uri : '/users/{user}',      action : [UserController::class, 'update'   ])->name('users.update')->middleware('auth');
 
-Route::delete(uri : '/users/{user}',   action : [UserController::class, 'destroy'])->name('users.destroy')->where('user','\d+');
+Route::delete(uri : '/users/{user}',   action : [UserController::class, 'destroy'])->name('users.destroy') ->middleware('auth');
+
+// Users Represent a resource so we can create their route simply with :
+// Route::resource('users',UserController::class)->only(['index','show','edit','update','destroy']);
 
 
-//Posts - With grouping routes
+
+
+
+
+// Posts - With grouping routes middlewares in controller (BEST PRACTICE)
+
 // Route::prefix('posts')->name('posts.')->group(function(){
 //     Route::controller(PostController::class)->group(function(){
 //         Route::get(uri : '/',            action : 'index'  )->name('index');
@@ -59,6 +69,37 @@ Route::delete(uri : '/users/{user}',   action : [UserController::class, 'destroy
  * WE SET UP ALL THEIR ROUTE IN ONE LINE WITH THE STATIC METHOD resource IN THE CLASS Routes
  */
 Route::resource('posts',PostController::class);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

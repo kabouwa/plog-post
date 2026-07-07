@@ -30,9 +30,6 @@ article .card-footer{
     backdrop-filter: blur(120px);
 }
 
-tr{
-    cursor: pointer;
-}
 th,td{
     text-align: center;
     white-space: nowrap;
@@ -48,4 +45,19 @@ th,td{
     td{
         font-size: 0.9rem;
     }
+}
+.table-img{
+    width: 40px;
+    height: 40px;
+    z-index: 500;
+}
+.img-preview{
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99999;
+    background-color: rgba(0, 0, 0, 0.752);
+    opacity: 0;
+    visibility: hidden;
+    transition: all .2s ease;
 }

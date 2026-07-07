@@ -102,4 +102,28 @@
     $(document).click(cleanSelected)
 })();
 
+
+// Show Post Image 
+(function(){
+    const preview = $('.img-preview')
+    const showImage = e => {
+        const src = $(e.currentTarget).attr('src')
+        preview.find('img').attr('src', src)
+        preview.css({
+            opacity : '1',
+            visibility : 'visible'
+        })
+        $(document.body).css('overflow','hidden')
+    }
+    const hideImage = e => {
+        preview.css({
+            opacity : '0',
+            visibility : 'hidden'
+        })
+        $(document.body).css('overflow','auto')
+    }
+    $('td img').click(showImage)
+    preview.click(hideImage)
+})();
+
 deleteAlerts()
