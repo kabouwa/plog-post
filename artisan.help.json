@@ -1,0 +1,44 @@
+{
+    "prefix" : "php artisan ",
+    "version" : "--version",
+    "start-dev-server" : "serve --host=0.0.0.0 --port=8000",
+
+    "make:" : [
+        "controller PostController",
+        "controller PostController --resource",
+        "migration create_posts_table",
+        "migration add_image_to_posts_table",
+        "model Post",
+        "model Post -mcr // Create Model + Migration + Resource Controller",
+        "request StorePostRequest",
+        "factory PostFactory",
+        "seeder PostSeeder"
+    ],
+
+    "migration" : [
+        "migrate",
+        "migrate:fresh",
+        "migrate:fresh --seed"
+    ],
+
+    "database" : [
+        "db:seed",
+        "db:seed --class=PostSeeder"
+    ],
+    
+    "routes" : [
+        "route:list",
+        "route:list --name=posts",
+        "route:cache",
+        "route:clear"
+    ],
+
+    "cache" : [
+        "optimize:clear",
+        "cache:clear",
+        "config:clear",
+        "view:clear",
+        "route:cache",
+        "route:clear"
+    ]
+}
