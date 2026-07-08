@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
-
+use Illuminate\Support\Facades\Cookie;
 
 date_default_timezone_set('Africa/Casablanca');
 Route::get(uri : '/', action : function(){
@@ -51,17 +51,17 @@ Route::delete(uri : '/users/{user}',   action : [UserController::class, 'destroy
 // Route::prefix('posts')->name('posts.')->group(function(){
 //     Route::controller(PostController::class)->group(function(){
 //         Route::get(uri : '/',            action : 'index'  )->name('index');
-        
+
 //         Route::get(uri : '/create',      action : 'create' )->name('create');
-        
+
 //         Route::post(uri : '/',           action : 'store'  )->name('store');
-        
+
 //         Route::get(uri : '/{post}',      action : 'show'   )->name('show'); // where not important if the route bind with modal (Post $post)
-        
+
 //         Route::get(uri : '/{post}/edit', action : 'edit'   )->name('edit');
-        
+
 //         Route::put(uri : '/{post}',      action : 'update' )->name('update');
-        
+
 //         Route::delete(uri : '/{post}',   action : 'destroy')->name('destroy');
 //         // '/posts/{post:title}' to change default key in uri :nameColumn
 //     });
@@ -112,8 +112,8 @@ Route::get('request', function(Request $request){ //
  * * Request - Response :
  * TEST URI : /input?id=53&name=Mohammed%20kabouwa&checkbox=true&date=7-7-2026
  */
-Route::get('input', function(Request $request){ 
-    // Request 
+Route::get('input', function(Request $request){
+    // Request
     $id = $request->integer('id');
     $name = $request->string('name')->upper();
     $date = $request->date('date')->addDays(20);
@@ -124,25 +124,25 @@ Route::get('input', function(Request $request){
         echo '<h1>Request has The field ID AND NAME</h1>';
     });
     $responseHtml =  "
-Id : $id <br> 
-Name : $name <br> 
-Date : $date <br> 
+Id : $id <br>
+Name : $name <br>
+Date : $date <br>
 Checkbox: $checkbox <br>
 Uploaded File : $has <br>
 Request has field (id || name) : $hasAny <br>
 ";
     // Response
-   return new Response(content : $responseHtml, status : 500);
+   return new Response(content : $responseHtml , status : 500);
 });
 /**
  * * Download - Read Files
  */
-Route::prefix('download')->get('profile', function(){ 
+Route::prefix('download')->get('profile', function(){
     // Display
     // return response()->file(
     //     file : 'storage/users/default-profile.png',
     // );
-    // Download - and show 
+    // Download - and show
     return response()->download(
         file : 'storage/users/default-profile.png',
         name : 'profile',
@@ -153,29 +153,62 @@ Route::prefix('download')->get('profile', function(){
  * * Cookies
  */
 Route::prefix('cookie')->group(function (){
-    Route::get('get/{name}', function($name, Request $request){ 
+    Route::get('get/{name}', function($name, Request $request){
         $cookie = $request->cookie($name);
         return 'The requested cookie is : ' . htmlspecialchars($cookie);
     })->where('name','[a-zA-z0-9]+');
 
-    Route::get('set/{name}/{value}', function($name, $value){ 
+    Route::get('set/{name}/{value}', function($name, $value){
         $newCookie = cookie($name, $value, 60);
         return response("The cookie with name : " . htmlspecialchars($name). " is set with the value " . htmlspecialchars($value) )->withCookie($newCookie);
     })->where('name','[a-zA-z0-9]+')->where('value','[a-zA-z0-9]+');
 
-    Route::get('unset/{name}', function($name, Request $request){ 
+    Route::get('unset/{name}', function($name, Request $request){
         return response("The cookie w is deleted successffuly !")
             ->withCookie(Cookie::forget($name));
     })->where('name','[a-zA-z0-9]+');
 
 });
+/**
+ * * Requests - Headers Get and set
+ */
+Route::get('/headers',function(Request $r){
+    $data = [
+        'message' => 'request accepted',
+        // Get headers
+        // 'headers' => $request->header(),
+        // 'Method' => $request->header('Request Method'),
+        // 'Authorization' => $request->header('Authorization'),
+        // 'Accept' => $request->header('Accept'),
+        // 'User-Agent' => $request->header('User-Agent'),
 
 
+        // Get request info
+        'host' => $r->host(),
+        'full-url' => $r->fullUrl(),
+        'url' => $r->url(),
+        'pathname' => $r->path(),
+        'is-GET-method' => $r->isMethod('GET'),
+        'is-POST-method' => $r->isMethod('POST'),
+        'filled-name-query' => $r->filled('name'),
+        'is-secure' => $r->isSecure(),
+        'query' => $r->query(),
+        'route-is' => $r->routeIs('headers'),
+        'bearer-token' => $r->bearerToken()
+    ];
 
-
-
-
-
+    return new Response(content : $data, status : 203, headers :  [
+        // -- Examples of setting Headers --
+        // Type of response
+        'Content-Type' => 'text/plain', // 'text/html - 'image/png' - 'application/json'
+        // Set Cookies
+        'Set-Cookie' => 'name=mohammed',
+        // Specifiy origins allowed to request
+        'Access-Control-Allow-Origin' => 'http://127.0.0.1:5500',
+        // Custom headers
+        'X-USER' => 'ADMIN',
+    ]);
+})->name('headers');
 
 
 

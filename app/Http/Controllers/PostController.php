@@ -39,16 +39,18 @@ class PostController extends Controller implements HasMiddleware
         // SELECT * FROM Post (Without condition-filter-limit...)
         // $posts = Post::all();
         // Build query then execute with get()
-        
+
         if($request->filled('profile')){
-            
-           $posts = Post::whereHas('user', function($query){
-                $query->where('username', request('profile'));
-           })
-            ->paginate(15)
-            ->withQueryString();
-            $total = Post::where('user_id',$request->user()->id)
-            ->count();
+            $username = $request->string('profile');
+            $posts = Post::whereHas('user', function($query) use ($username){
+                $query->where('username',$username);
+            })
+                ->paginate(15)
+                ->withQueryString();
+            $total = Post::whereHas('user', function($query) use ($username){
+                $query->where('username',$username);
+            })
+                ->count();
         }else if($request->filled('q')){
             // Jointure
             $posts = Post::where('id', request('q'))
@@ -71,9 +73,9 @@ class PostController extends Controller implements HasMiddleware
         $post = Post::findOrFail($post);
         // Method 2 : return first row founded with a condition or return 404 http response
         // $post = Post::where('id',$post)->firstOrFail();
-        // Method 3 : Route Model binding 
+        // Method 3 : Route Model binding
         // in function parameter specify type of url parameter -> public function show(Post $post){}
-        
+
         return view(view : 'posts.show', data : compact('post') );
     }
 
@@ -103,16 +105,16 @@ class PostController extends Controller implements HasMiddleware
         ]);
         // Save image after validated it store(folderName , fileSystemDisk)
         $img_path = request()->hasFile('image')
-            ?  request()->file('image')->store('posts','public') 
-            : "posts/post-no-image.png"; // Generate a unique file name 
-       
+            ?  request()->file('image')->store('posts','public')
+            : "posts/post-no-image.png"; // Generate a unique file name
+
         // Or with custom name
         /**
          * $image = request()->file('image');
          * $img_path = 'post-img-id' . request()->user()->id . rand() .'-' . $image->getClientOriginalName();
          * $image->storeAs('posts',$img_path,'public');
          */
-        
+
         // Step 2 - Get Data
         // $r = request();
 
@@ -139,7 +141,7 @@ class PostController extends Controller implements HasMiddleware
             "description" => $validated['description'],
             "image_path"  => $img_path,
         ]);
-        
+
         // Step 4 - Redirect To Created Post View
         return to_route("posts.show", $post->id)
             ->with('alert','Post created successfuly')
@@ -157,7 +159,7 @@ class PostController extends Controller implements HasMiddleware
 
     public function update(Post $post){
         $this->AuthorizeAdminOrOwner($post);
-        
+
         $r = request();
         // Method 1 : find with id then update
         // Post::find($post)->update([
@@ -176,7 +178,7 @@ class PostController extends Controller implements HasMiddleware
             if($post->image_path !== 'posts/post-no-image.png'){
                 Storage::disk('public')->move(
                     $post->image_path,
-                    'posts/trash/' . basename($post->image_path) 
+                    'posts/trash/' . basename($post->image_path)
                 );
             }
             $validated['image_path'] = request()->file('image')->store('posts','public');
