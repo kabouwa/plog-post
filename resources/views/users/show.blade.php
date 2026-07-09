@@ -56,18 +56,34 @@
                                     <i class="bi bi-trash"></i> Delete
                                 </button>
                             </div>
-                        
                     @endif
                 @endauth
             </div>
         </div>
     </article>
 
+    <p class="h1">Posts : </p>
+        {{-- @dd($posts) --}}
+        @empty(count($posts))
+            <section class="alert alert-danger my-5">
+                No Posts <strong>Founded</strong> !
+            </section>
+        @else
+            <section class="row">
+                @foreach ($posts as $post)
+                    <x-cards.post-card :post="$post" />
+                @endforeach
+            </section>
+        @endempty
+
     <x-slot:modals>
         <x-modals.delete-user-modal :user="$user"/>
+        @foreach ($posts as $post)
+            <x-modals.delete-post-modal :post="$post" />
+        @endforeach
     </x-slot:modals>
 
     <x-slot:scripts>
-        <script src="{{ asset('js/posts/show.js') }}"></script>
+        <script src="{{ asset('js/show.js') }}"></script>
     </x-slot:scripts>
 </x-layouts.app>

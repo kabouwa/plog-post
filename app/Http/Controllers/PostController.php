@@ -42,20 +42,23 @@ class PostController extends Controller implements HasMiddleware
 
         if($request->filled('profile')){
             $username = $request->string('profile');
-            $posts = Post::whereHas('user', function($query) use ($username){
-                $query->where('username',$username);
-            })
+            // Relationships join by laravel
+            $user = User::where('username', $username)->firstOrFail();
+            $posts = $user->posts()
                 ->paginate(15)
                 ->withQueryString();
+            // Count by inner oin
             $total = Post::whereHas('user', function($query) use ($username){
                 $query->where('username',$username);
             })
                 ->count();
         }else if($request->filled('q')){
-            // Jointure
-            $posts = Post::where('id', request('q'))
-            ->orWhere('title', 'LIKE', '%' . request('q') . '%')
-            ->paginate(15);
+            $q = $request->string('q');
+            $posts = Post::where('id', $q)
+            ->orWhere('title', 'LIKE', '%' .$q . '%')
+            ->orWhere('description', 'LIKE', '%' .$q . '%')
+            ->orderByDesc('id')
+            ->paginate(20);
             $total = Post::count('id');
         }else{
             $posts = Post::orderByDesc('id')
@@ -75,8 +78,9 @@ class PostController extends Controller implements HasMiddleware
         // $post = Post::where('id',$post)->firstOrFail();
         // Method 3 : Route Model binding
         // in function parameter specify type of url parameter -> public function show(Post $post){}
+        $comments = $post->comments()->orderByDesc('id')->get();
 
-        return view(view : 'posts.show', data : compact('post') );
+        return view(view : 'posts.show', data : compact('post','comments') );
     }
 
     public function create(){
@@ -194,7 +198,7 @@ class PostController extends Controller implements HasMiddleware
                 ->with('type','success');
     }
 
-    public function destroy(Post $post){
+    public function destroy(Post $post, Request $r){
         $this->AuthorizeAdminOrOwner($post);
         // Delete from Database with just Id of row
         // $post = Post::find($postId);
@@ -204,8 +208,12 @@ class PostController extends Controller implements HasMiddleware
 
         // Or Directly
         $post->delete();
+        
+        $redirection = $r->routeIs('posts.show') 
+        ? redirect()->route('posts.index')
+        : redirect()->back();
 
-        return redirect()->route('posts.index')
+        return $redirection
                 ->with('alert','Post Deleted successfuly')
                 ->with('accent','Done')
                 ->with('type','success');;

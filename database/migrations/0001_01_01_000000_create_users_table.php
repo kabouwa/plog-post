@@ -50,4 +50,14 @@ return new class extends Migration
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
+
+    /**
+     * * Relationships :
+     * 1-1 (One to One) : Citizen - CIN
+     * 1-N (One to Many) : Author has multiple Books
+     * N-1 (One to Many reversed) : each Book belongs to one Author
+     * N-N (Many to Many) : A Student has multiple Subjects and a Subject has multiple Students
+     */
+
+
 };

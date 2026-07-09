@@ -40,9 +40,8 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $total = Post::where('id',$user->id)->count();
-        $post = Post::where('id',$user->id)->orderByDesc('id')->get();
-        return view('users.show' , compact('user','post','total'));
+        $posts = $user->posts()->orderByDesc('id')->get();
+        return view('users.show' , compact('user','posts'));
     }
 
     public function edit(User $user)

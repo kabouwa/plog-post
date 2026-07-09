@@ -80,6 +80,35 @@
         </div>
     </article>
 
+    <p class="h1">Comments :</p>
+    <div class="row">
+        @foreach ($comments as $comment)
+            <article class="my-2">
+                <div class="card flex-row">
+                    <div class="card-body flex-grow-1">
+                        <div class="d-flex align-items-center gap-3">
+                            <img class="rounded-circle border border-3 p-2" src={{ asset('storage/' . $comment->user->profile_path ) }} alt="User profile" style="width: 40px;height: 40px;">
+                            <p class="fw-bold">
+                                {{ $comment->user->username }}
+                                <i class="bi bi-clock text-secondary ms-2"></i>
+                                {{ $comment->created_at->format('d M H:i') }}
+                            </p>
+                        </div>
+                         <p>{{ $comment->body }}</p>
+                    </div>
+                    @auth
+                        @if (Auth::user()->is_admin || Auth::user()->id  === $comment->user_id)
+                            <div class="card-body d-flex flex-column align-items-center justify-content-center gap-2">
+                                <a class="btn btn-sm btn-outline-warning" href="#"><i class="bi bi-pencil"></i></a>
+                                <a class="btn btn-sm btn-outline-danger" href=""><i class="bi bi-trash"></i></a>
+                            </div>    
+                        @endif
+                    @endauth
+                </div>
+            </article>
+        @endforeach
+    </div>
+
     <x-slot:modals>
         <x-modals.delete-post-modal :post="$post"/>
     </x-slot:modals>
@@ -88,6 +117,3 @@
         <script src="{{ asset('js/show.js') }}"></script>
     </x-slot:scripts>
 </x-layouts.app>
-
-
-

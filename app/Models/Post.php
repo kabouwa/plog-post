@@ -25,6 +25,11 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     // Another method with personalized function name , need to specify foregin key column
     public function creator(){
         return $this->belongsTo(User::class,'user_id');

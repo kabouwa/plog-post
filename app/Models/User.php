@@ -39,6 +39,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function getProfilePathAttribute($value)
     {
         return $value ?? 'users/default-profile.png' ;
