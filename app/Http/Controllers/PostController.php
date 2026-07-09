@@ -28,6 +28,7 @@ class PostController extends Controller implements HasMiddleware
         ];
     }
 
+    // Classic method if you're not use policies or gates
     private function AuthorizeAdminOrOwner(Post $post){
         if(
             Auth::user()->id !== $post->user_id
@@ -154,7 +155,8 @@ class PostController extends Controller implements HasMiddleware
     }
 
     public function edit(Post $post){
-        $this->AuthorizeAdminOrOwner($post);
+        // $this->AuthorizeAdminOrOwner($post);
+        $this->authorize('update',$post);
 
         return view(view : "posts.edit", data : [
             "post" => $post
@@ -162,7 +164,8 @@ class PostController extends Controller implements HasMiddleware
     }
 
     public function update(Post $post){
-        $this->AuthorizeAdminOrOwner($post);
+        // $this->AuthorizeAdminOrOwner($post);
+        $this->authorize('update',$post);
 
         $r = request();
         // Method 1 : find with id then update
@@ -199,7 +202,8 @@ class PostController extends Controller implements HasMiddleware
     }
 
     public function destroy(Post $post, Request $r){
-        $this->AuthorizeAdminOrOwner($post);
+        // $this->AuthorizeAdminOrOwner($post);
+        $this->authorize('delete',$post);
         // Delete from Database with just Id of row
         // $post = Post::find($postId);
         // $post->delete();

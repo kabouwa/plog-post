@@ -13,7 +13,8 @@
         "request StorePostRequest",
         "factory PostFactory",
         "seeder PostSeeder",
-        "component CreateForm"
+        "component CreateForm",
+        "policy PostPolicy --model=Post"
     ],
 
     "migration" : [

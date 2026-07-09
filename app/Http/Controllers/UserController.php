@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -44,15 +45,25 @@ class UserController extends Controller
         return view('users.show' , compact('user','posts'));
     }
 
-    public function edit(User $user)
+    public function edit(User $user, Request $request)
     {
-        $this->AuthorizeAdminOrOwner($user);
-        return view('users.edit',compact('user'));
+        // Method 1: Authorization
+        // $this->AuthorizeAdminOrOwner($user);
+
+        // Method 2: Gates - defined in Providers\AppServiceProvider::boot 
+        // Gate::authorize('update-user',$user);
+
+        // Method 3 (recommended) : Policies
+        // if(!$request->user()->can('update', $user)) abort(403);
+        
+        $this->authorize('update',$user);
+
+        return view('users.edit', compact('user'));
     }
 
     public function update(User $user, UpdateUserRequest $request)
     {
-        $this->AuthorizeAdminOrOwner($user);
+        $this->authorize('update',$user);
         $validated = $request->validated();
         
         if(empty($validated['password'])) unset($validated['password']);
@@ -76,7 +87,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $this->AuthorizeAdminOrOwner($user);
+        $this->authorize('delete',$user);
 
         $UserPosts = Post::where('user_id',$user->id)->get('image_path');
         foreach($UserPosts as $post){

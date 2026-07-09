@@ -22,4 +22,4 @@
     </div>
     
 </div>
-<script> document.querySelector('head title').innerHTML = "Kabouwa - {{ $title }} / {{ implode($status) }}" </script>
+<script> $('head title').text(`Kabouwa - {{ $title }} / {{ implode($status) }}`) </script>
