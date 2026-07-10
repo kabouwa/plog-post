@@ -4,7 +4,7 @@
 
 html{
     scrollbar-width: thin;
-    scrollbar-color: rgb(123, 123, 123) rgba(131, 255, 238, 0.344);
+    scrollbar-color: rgba(123, 123, 123,0.1) rgba(173, 255, 244, 0.1);
 }
 body{
     background-image: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);

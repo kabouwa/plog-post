@@ -90,9 +90,10 @@
                     <td>{{ $post->created_at->format('F d, Y') }}</td>
                     <td>
                         <a class="btn btn-outline-primary btn-sm flex-grow-1" href={{ route('posts.show', $post->id ) }}> <i class="bi bi-eye"></i></a>
-                        @auth
-                            @if(Auth::user()->id == $post->user->id || Auth::user()->is_admin)
+                        @can('update',$post)
                             <a class="btn btn-outline-warning btn-sm" href={{ route('posts.edit', $post->id ) }}> <i class="bi bi-pencil"></i></a>
+                        @endcan
+                        @can('delete',$post)
                             <button 
                                 type="button" 
                                 class="btn btn-outline-danger btn-sm" 
@@ -100,9 +101,7 @@
                                 data-bs-target="#delete-post-{{ $post->id }}-modal">
                                     <i class="bi bi-trash"></i>
                             </button>
-                            @endif
-                        @endauth
-                        
+                        @endcan 
                     </td>
                 </tr>
                 @endforeach
@@ -131,11 +130,10 @@
 
         @auth
             @foreach ($posts as $post)
-                @if (Auth::user()->id == $post->user->id || Auth::user()->is_admin)
+                @can('delete',$post)
                     <x-modals.delete-post-modal :post="$post"/>
-                @endif
+                @endcan
             @endforeach
-
         @endauth
     </x-slot:modals>
 

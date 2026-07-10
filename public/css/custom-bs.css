@@ -5,8 +5,7 @@
 }
 .form-control{
     border-radius: 25px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 10px 25px;
 }
 .pointer{
     cursor: pointer !important;

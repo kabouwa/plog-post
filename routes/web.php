@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -71,7 +72,7 @@ Route::delete(uri : '/users/{user}',   action : [UserController::class, 'destroy
  * WE SET UP ALL THEIR ROUTE IN ONE LINE WITH THE STATIC METHOD resource IN THE CLASS Routes
  */
 Route::resource('posts',PostController::class);
-
+Route::resource('comments',CommentController::class)->only(['store','update','destroy']);
 
 
 

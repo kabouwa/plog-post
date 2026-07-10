@@ -42,7 +42,8 @@ class UserController extends Controller
     public function show(User $user)
     {
         $posts = $user->posts()->orderByDesc('id')->get();
-        return view('users.show' , compact('user','posts'));
+        $total = count($posts);
+        return view('users.show' , compact('user','posts','total'));
     }
 
     public function edit(User $user, Request $request)

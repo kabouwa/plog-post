@@ -4,47 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class CommentController extends Controller
+class CommentController extends Controller implements HasMiddleware
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public static function middleware() : array
     {
-        //
+        return [
+            new Middleware('auth')
+        ];
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
+        $validated = $request->validate([
+            'comment' => 'required|string|max:1000',
+            'post_id' => 'required|exists:posts,id'
+        ]);
+        Comment::create([
+            'body' => $validated['comment'],
+            'post_id' => $validated['post_id'],
+            'user_id' => auth()->id(),
+        ]);
+        return redirect()->back()->with('alert','comment added successfuly.');
     }
 
     /**
@@ -52,7 +36,13 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        $this->authorize('update',$comment);
+        $validated = $request->validate([
+            'comment' => 'required|string|max:1000',
+        ]);
+        $comment->body = $validated['comment'];
+        $comment->save();
+        return redirect()->back()->with('alert','comment updated successfuly.');
     }
 
     /**
@@ -60,6 +50,8 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $this->authorize('delete',$comment);
+        $comment->delete();
+        return redirect()->back()->with('alert','comment deleted successfuly.');        
     }
 }

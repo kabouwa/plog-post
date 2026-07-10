@@ -9,10 +9,10 @@
             case "Escape":
                 window.location.href = '/'
                 break
-            case "e":   
-                if(editLink) window.location.href = editLink         
-                break
-            case "d":
+            // case "e":   
+            //     if(editLink) window.location.href = editLink         
+            //     break
+            // case "d":
             case "Delete":
                 if(delBtn) delBtn.click()         
                 break

@@ -69,21 +69,21 @@
 
                     <p class="card-text"> {{ $user->bio }} </p>
                 </div>
-                @auth
-                    @if(Auth::user()->id == $user->id || Auth::user()->is_admin)
-                        <div class="card-footer border-top d-flex gap-2">
-                            {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i>    View</a> --}}
-                            <a class="btn btn-outline-warning btn-sm flex-grow-1 edit-link" href="{{ route('users.edit',$user->id) }}"> <i class="bi bi-pencil"></i> Edit</a>
-                            <button
+                @can('update',$user)
+                    <div class="card-footer border-top d-flex gap-2">
+                        {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i>    View</a> --}}
+                        <a class="btn btn-outline-warning btn-sm flex-grow-1 edit-link" href="{{ route('users.edit',$user->id) }}"> <i class="bi bi-pencil"></i> Edit</a>
+                        @can('delete',$user)
+                        <button
                                 type="button" 
                                 class="btn btn-outline-danger btn-sm flex-grow-1 del-btn" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#delete-user-{{ $user->id }}-modal">
                                 <i class="bi bi-trash"></i> Delete
-                            </button>
-                        </div>
-                    @endif
-                @endauth
+                        </button>
+                        @endcan
+                    </div>
+                @endcan
             </div>
         </article>
         @endforeach

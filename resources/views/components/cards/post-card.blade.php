@@ -16,20 +16,20 @@
                 <strong>Created at:</strong> {{ $post->created_at->format('F d, Y') }}
             </p>
         </div>
-        @auth
-            @if(Auth::user()->id == $post->creator->id || Auth::user()->is_admin)
+            @can('update',$post)
                 <div class="card-footer border-top d-flex gap-2">
                     {{-- <a class="btn btn-outline-primary btn-sm flex-grow-1" href="{{ route('posts.show', $post->id ) }}"> <i class="bi bi-eye"></i>    View</a> --}}
                     <a class="btn btn-outline-warning btn-sm flex-grow-1 edit-link" href={{ route('posts.edit', $post->id ) }}> <i class="bi bi-pencil"></i> Edit</a>
+                    @can('delete',$post)
                     <button
                         type="button" 
                         class="btn btn-outline-danger btn-sm flex-grow-1 del-btn" 
                         data-bs-toggle="modal" 
                         data-bs-target="#delete-post-{{ $post->id }}-modal">
                         <i class="bi bi-trash"></i> Delete
-                    </button>
+                    </button>    
+                    @endcan
                 </div>
-            @endif
-        @endauth
+            @endcan
     </div>
 </article>

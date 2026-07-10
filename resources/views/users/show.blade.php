@@ -42,27 +42,29 @@
                     <a class="btn btn-outline-success w-100" href="{{ route('posts.index',['profile'=>$user->username]) }}"> <i class="bi bi-file-text"></i> {{ $user->username }}'s Posts</a>
                 </div>
                 @auth
-                    @if(Auth::user()->id == $user->id || Auth::user()->is_admin)
-                            <div class="col-12 col-sm-6 col-lg-3 my-1">
-                                <a class="btn btn-warning w-100" id="edit-link" href="{{ route('users.edit', $user->id) }}"> <i class="bi bi-pencil"></i> Edit</a>
-                            </div>
-                            <div class="col-12 col-sm-6 col-lg-3 my-1">
-                                <button 
-                                    type="button" 
-                                    class="btn btn-outline-danger w-100" 
-                                    id="del-btn"
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#delete-user-{{ $user->id }}-modal">
-                                    <i class="bi bi-trash"></i> Delete
-                                </button>
-                            </div>
-                    @endif
+                    @can('update',$user)
+                    <div class="col-12 col-sm-6 col-lg-3 my-1">
+                        <a class="btn btn-warning w-100" id="edit-link" href="{{ route('users.edit', $user->id) }}"> <i class="bi bi-pencil"></i> Edit</a>
+                    </div>
+                    @endcan
+                    @can('delete',$user)
+                    <div class="col-12 col-sm-6 col-lg-3 my-1">
+                        <button 
+                            type="button" 
+                            class="btn btn-outline-danger w-100" 
+                            id="del-btn"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#delete-user-{{ $user->id }}-modal">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </div>
+                    @endcan
                 @endauth
             </div>
         </div>
     </article>
 
-    <p class="h1">Posts : </p>
+    <p class="h1">Total posts : {{ $total }}</p>
         {{-- @dd($posts) --}}
         @empty(count($posts))
             <section class="alert alert-danger my-5">
@@ -76,12 +78,19 @@
             </section>
         @endempty
 
+    @auth 
     <x-slot:modals>
-        <x-modals.delete-user-modal :user="$user"/>
+        @can('update',$user)
+            <x-modals.delete-user-modal :user="$user"/>
+        @endcan
+        
         @foreach ($posts as $post)
+            @can('delete',$user)
             <x-modals.delete-post-modal :post="$post" />
+            @endcan
         @endforeach
     </x-slot:modals>
+    @endauth
 
     <x-slot:scripts>
         <script src="{{ asset('js/show.js') }}"></script>

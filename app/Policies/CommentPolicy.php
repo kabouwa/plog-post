@@ -8,21 +8,8 @@ use Illuminate\Auth\Access\Response;
 
 class CommentPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        return false;
-    }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Comment $comment): bool
-    {
-        return false;
-    }
+
 
     /**
      * Determine whether the user can create models.
@@ -37,7 +24,7 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment): bool
     {
-        return false;
+        return $user->is_admin || $user->id === $comment->user_id;
     }
 
     /**
@@ -45,9 +32,11 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): bool
     {
-        return false;
+        return $user->is_admin || $user->id === $comment->user_id;
     }
 
+
+    
     /**
      * Determine whether the user can restore the model.
      */

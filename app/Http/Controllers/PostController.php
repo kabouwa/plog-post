@@ -79,9 +79,9 @@ class PostController extends Controller implements HasMiddleware
         // $post = Post::where('id',$post)->firstOrFail();
         // Method 3 : Route Model binding
         // in function parameter specify type of url parameter -> public function show(Post $post){}
-        $comments = $post->comments()->orderByDesc('id')->get();
-
-        return view(view : 'posts.show', data : compact('post','comments') );
+        $comments = $post->comments()->orderByDesc('id')->paginate(5);
+        $total = count($post->comments);
+        return view(view : 'posts.show', data : compact('post','comments','total') );
     }
 
     public function create(){

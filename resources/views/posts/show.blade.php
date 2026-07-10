@@ -15,7 +15,7 @@
     @if( session()->has('alert') ) 
         <x-modals.alert 
             :type="session('type')"
-            :accent="session('accent')"
+            :accent="session('accent') ?? 'Done'"
         >
             {{ session('alert') }}
         </x-modals.alert>
@@ -35,27 +35,27 @@
                 <p class="card-text text-secondary ms-2">{{ $post->description }}</p>
             </div>
         </div>
-        @auth
-            @if(Auth::user()->id == $post->creator->id || Auth::user()->is_admin)
-            <div class="card-footer bg-transparent">
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-lg-3 my-1">
-                        <a class="btn btn-warning w-100" id="edit-link" href={{ route('posts.edit', $post->id ) }}> <i class="bi bi-pencil"></i> Edit</a>
+            @can('update',$post)
+                <div class="card-footer bg-transparent">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-lg-3 my-1">
+                            <a class="btn btn-warning w-100" id="edit-link" href={{ route('posts.edit', $post->id ) }}> <i class="bi bi-pencil"></i> Edit</a>
+                        </div>
+                        @can('delete',$post)
+                        <div class="col-12 col-sm-6 col-lg-3 my-1">
+                            <button 
+                                type="button" 
+                                class="btn btn-outline-danger w-100" 
+                                id="del-btn"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#delete-post-{{ $post->id }}-modal">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+                        @endcan
                     </div>
-                    <div class="col-12 col-sm-6 col-lg-3 my-1">
-                        <button 
-                            type="button" 
-                            class="btn btn-outline-danger w-100" 
-                            id="del-btn"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#delete-post-{{ $post->id }}-modal">
-                            <i class="bi bi-trash"></i> Delete
-                        </button>
-                    </div>
-                </div>
-            </div>
-            @endif
-        @endauth
+                </div> 
+            @endcan
     </article>
 
     <article class="card mb-4 shadow-sm glass-card">
@@ -80,12 +80,39 @@
         </div>
     </article>
 
-    <p class="h1">Comments :</p>
+    
+    {{-- Add Comments  --}}
+    <div class="row">
+        <form method="POST" action={{ route('comments.store') }} class="form">
+            @csrf
+            <input type="hidden" name="post_id" value={{ $post->id }}>
+            <label for="comment" class="form-label">Add comment :</label>
+            <div class="row">
+                <div class="col-12 col-md-8 col-lg-9 my-1">
+                    <textarea 
+                        name="comment" 
+                        id="comment" 
+                        class="form-control @error('comment') is-invalid @enderror" 
+                        placeholder="I like your post"
+                        rows="4"
+                        >{{ old('comment') }}</textarea>
+                    @error('comment')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-12 col-md-4 col-lg-3 my-1">
+                    <button class="btn btn-outline-primary w-100" type="submit">Sent</button>
+                </div>
+            </div>
+        </form>
+    </div>  
+    <hr>
+    <p class="h1">Total comments : {{ $total }}</p>
     <div class="row">
         @foreach ($comments as $comment)
             <article class="my-2">
                 <div class="card flex-row">
-                    <div class="card-body flex-grow-1">
+                    <div class="card-body w-100">
                         <div class="d-flex align-items-center gap-3">
                             <img class="rounded-circle border border-3 p-2" src={{ asset('storage/' . $comment->user->profile_path ) }} alt="User profile" style="width: 40px;height: 40px;">
                             <p class="fw-bold">
@@ -96,22 +123,50 @@
                         </div>
                          <p>{{ $comment->body }}</p>
                     </div>
-                    @auth
-                        @if (Auth::user()->is_admin || Auth::user()->id  === $comment->user_id)
-                            <div class="card-body d-flex flex-column align-items-center justify-content-center gap-2">
-                                <a class="btn btn-sm btn-outline-warning" href="#"><i class="bi bi-pencil"></i></a>
-                                <a class="btn btn-sm btn-outline-danger" href=""><i class="bi bi-trash"></i></a>
-                            </div>    
-                        @endif
-                    @endauth
+                    @can('update',$comment)
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center gap-2">
+                        <button
+                            type="button" 
+                            class="btn btn-sm btn-outline-warning p-2 del-btn" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#edit-comment-{{ $comment->id }}-modal">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        @can('delete',$comment)
+                        <button
+                            type="button" 
+                            class="btn btn-sm btn-outline-danger p-2 del-btn" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#delete-comment-{{ $comment->id }}-modal">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                        @endcan
+                    </div>
+                    @endcan
                 </div>
             </article>
         @endforeach
     </div>
+    <div class="row">
+        {{ $comments->links() }}
+    </div>
 
+    @auth
     <x-slot:modals>
-        <x-modals.delete-post-modal :post="$post"/>
+        @can('delete',$post)
+            <x-modals.delete-post-modal :post="$post"/>
+        @endcan
+
+        @foreach ($comments as $comment)
+            @can('update',$comment)
+            <x-modals.edit-comment-modal :comment="$comment"/>
+            @endcan
+            @can('delete',$comment)
+            <x-modals.delete-comment-modal :comment="$comment"/>
+            @endcan
+        @endforeach
     </x-slot:modals>
+    @endauth
 
     <x-slot:scripts>
         <script src="{{ asset('js/show.js') }}"></script>
