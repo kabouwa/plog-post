@@ -11,20 +11,20 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbar">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav gap-3">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}" href="{{ route('users.index') }}">Users</a>
+                        <a class="nav-link rounded-4 px-3 border border-1{{ request()->routeIs('users.index') ? 'active bg-primary text-white' : '' }}" href="{{ route('users.index') }}">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('posts.index') && !request()->filled('profile') ? 'active' : '' }}" href="{{ route('posts.index') }}">Posts</a>
+                        <a class="nav-link rounded-4 px-3 border border-1 {{ request()->routeIs('posts.index') && !request()->filled('profile') ? 'active bg-primary text-white' : '' }}" href="{{ route('posts.index') }}">Posts</a>
                     </li>
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('posts.index') && request()->filled('profile') ? 'active' : '' }}" href="{{ route('posts.index',['profile' => Auth::user()->username]) }}">My posts</a>
+                            <a class="nav-link rounded-4 px-3 border border-1 {{ request()->routeIs('posts.index') && request()->filled('profile') ? 'active bg-primary text-white' : '' }}" href="{{ route('posts.index',['profile' => Auth::user()->username]) }}">My posts</a>
                         </li>
                     @endauth
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('posts.create') ? 'active' : '' }}" href="{{ route('posts.create') }}">Create Post</a>
+                        <a class="nav-link rounded-4 px-3 border border-1 {{ request()->routeIs('posts.create') ? 'active bg-primary text-white' : '' }}" href="{{ route('posts.create') }}">Create Post</a>
                     </li>
                 </ul>
                 

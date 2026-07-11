@@ -9,6 +9,7 @@ use App\Policies\UserPolicy;
 use App\Policies\PostPolicy;
 use App\Policies\CommentPolicy;
 
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
+        JsonResource::withoutWrapping();
         // Gates
         // Gate::define('update-user', function(User $authUser, User $toEditUser){
         //     // authUser injected by laravel - toEdit is comming from uri (Route model binding we give it when we call this get Gate::authorize)

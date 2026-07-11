@@ -48,6 +48,12 @@ class User extends Authenticatable
     {
         return $value ?? 'users/default-profile.png' ;
     }
+    public function getUpdatedAt($value)
+    {
+        return $value->format("d-m-Y i:s") ;
+    }
+
+
 }
 
 // Default password is : password

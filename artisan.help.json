@@ -14,7 +14,8 @@
         "factory PostFactory",
         "seeder PostSeeder",
         "component CreateForm",
-        "policy PostPolicy --model=Post"
+        "policy PostPolicy --model=Post",
+        "resource PostResource"
     ],
 
     "migration" : [

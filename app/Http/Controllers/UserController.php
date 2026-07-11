@@ -100,7 +100,8 @@ class UserController extends Controller
                 );
             }
         } 
-        if($user->profile_path){
+        $profile = $user->profile_path;
+        if($profile && $profile  !== 'users/default-profile.png'){
             Storage::disk('public')->move(
                 $user->profile_path,
                 'users/trash/' . basename($user->profile_path)
