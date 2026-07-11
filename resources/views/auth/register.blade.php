@@ -4,7 +4,7 @@
 >
     <div class="rowr">
         <div class="col-12 col-sm-8 col-lg-5 mx-auto bg-light p-4 rounded-3">
-            <h3 class="mb-3 text-center">Register</h3>
+            <h3 class="mb-3 text-center">Create an Account</h3>
             <div class="text-center position-relative col-12 col-sm-6 col-lg-4 mx-auto" id="preview" >
                 <img 
                     class="rounded-circle img-fluid p-1 border border-2 border-secondary w-100 h-100 min-h-100 min-w-100"
