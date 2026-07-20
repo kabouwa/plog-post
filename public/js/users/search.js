@@ -7,7 +7,7 @@
         let query = '?q=' + search
         const res = await fetch(API_URL + query)
         const data = await res.json()
-        const users = data.users.data
+        const users = data.data
         return users
     }
     const hideOutput = _ => { output.css({opacity : '0',visibility : 'hidden'}); output.html('');}
