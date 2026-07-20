@@ -1,6 +1,10 @@
 @props([
     'post' => null,
 ])
+@if(  !$post->user )
+    @dd($post->user_id);
+@endif
+
 <article class="col-12 col-sm-6 px-2 py-4">
     <div class="card h-100 bg-transparent text-dark" data-view-link={{ route('posts.show', $post->id ) }}>
         <img class="card-img p-1 rounded-3 pointer" src={{ asset( 'storage/' .  $post->image_path)  }} alt="Post picture" onclick="toview(event, '{{ route('posts.show', $post->id ) }}' )" >

@@ -20,3 +20,11 @@ Route::apiResource('v1/users', UserController::class)
         'update' => 'api.users.update',
         'destroy' => 'api.users.destroy'
     ]);
+Route::apiResource('v1/posts', PostController::class)
+    ->names([
+        'index' => 'api.posts.index',
+        'show' => 'api.posts.show',
+        'store' => 'api.posts.store',
+        'update' => 'api.posts.update',
+        'destroy' => 'api.posts.destroy'
+    ]);

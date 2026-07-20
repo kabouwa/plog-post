@@ -111,7 +111,7 @@ class PostController extends Controller implements HasMiddleware
         // Save image after validated it store(folderName , fileSystemDisk)
         $img_path = request()->hasFile('image')
             ?  request()->file('image')->store('posts','public')
-            : "posts/post-no-image.png"; // Generate a unique file name
+            : "posts/default-image.png"; // Generate a unique file name
 
         // Or with custom name
         /**
@@ -211,13 +211,18 @@ class PostController extends Controller implements HasMiddleware
         // Post::destroy([$post]);
 
         // Or Directly
-        $post->delete();
         
-        $redirection = $r->routeIs('posts.show') 
-        ? redirect()->route('posts.index')
-        : redirect()->back();
+        $img_path = $post->image_path;
+        if($img_path !== 'posts/default-image.png'){
+            Storage::disk('public')->move(
+                $img_path,
+                'posts/trash/' . basename($img_path)
+            );
+        }
+        $post->comments()->delete();
+        $post->delete();
 
-        return $redirection
+        return redirect()->route('posts.index')
                 ->with('alert','Post Deleted successfuly')
                 ->with('accent','Done')
                 ->with('type','success');;
