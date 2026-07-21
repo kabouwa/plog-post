@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -16,21 +17,45 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = User::when($request->filled('q'), function($query) use ($request){
-            $query->where('id', $request->q)
-                ->orWhere('username', 'LIKE', "%" . $request->q . "%")
-                ->orWhere('name', 'LIKE', "%" . $request->q . "%")
-                ->orWhere('email', 'LIKE', "%" . $request->q . "%")
-                ->orWhere('bio', 'LIKE', "%" . $request->q . "%");
-        })
-            ->orderByDesc('id')
-            ->paginate(15)
-            ->withQueryString();
-        return UserResource::collection($users);
+                $query->where('id', $request->q)
+                    ->orWhere('username', 'LIKE', "%" . $request->q . "%")
+                    ->orWhere('name', 'LIKE', "%" . $request->q . "%")
+                    ->orWhere('email', 'LIKE', "%" . $request->q . "%")
+                    ->orWhere('bio', 'LIKE', "%" . $request->q . "%");
+            })
+                ->orderByDesc('id')
+                ->paginate(15)
+                ->withQueryString();
+        return $users;
+
+        // Caching, method 1 :
+        if(Cache::has('users_api')){
+            $users = Cache::get('users_api');
+        }else{
+            // $users = User::when($request->filled('q'), function($query) use ($request){
+            //     $query->where('id', $request->q)
+            //         ->orWhere('username', 'LIKE', "%" . $request->q . "%")
+            //         ->orWhere('name', 'LIKE', "%" . $request->q . "%")
+            //         ->orWhere('email', 'LIKE', "%" . $request->q . "%")
+            //         ->orWhere('bio', 'LIKE', "%" . $request->q . "%");
+            // })
+            //     ->orderByDesc('id')
+            //     ->paginate(15)
+            //     ->withQueryString();
+            $users = User::all();
+            Cache::forever('users_api', $users->toArray());
+        }
+        return $users;
     }
 
-    public function show(User $user) 
+    public function show($id) 
     {   
-        return new UserResource($user);
+        // Chaching method 2
+        $user = Cache::remember('user_' . $id, 3600, function () use ($id){
+            return User::findOrFail($id);
+        });
+        dd($user, gettype($user));
+        return $user;
     }
 
     public function store(RegisterRequest $request) 

@@ -37,6 +37,7 @@
     ],
 
     "cache" : [
+        "cache:table",
         "optimize:clear",
         "cache:clear",
         "config:clear",
